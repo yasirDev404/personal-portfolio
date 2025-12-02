@@ -5,9 +5,9 @@ import { HiLocationMarker } from 'react-icons/hi'
 import { Container, SectionTitle, Card, Button } from '../components/ui'
 
 const socialLinks = [
-  { name: 'GitHub', icon: FaGithub, href: 'https://github.com/yasirsahto', description: '@yasirsahto' },
-  { name: 'LinkedIn', icon: FaLinkedin, href: 'https://linkedin.com/in/yasirsahto', description: 'Yasir Sahto' },
-  { name: 'Email', icon: FaEnvelope, href: 'mailto:contact@yasirsahto.dev', description: 'contact@yasirsahto.dev' },
+  { name: 'GitHub', icon: FaGithub, href: 'https://github.com/yasirDev404', description: '@yasirDev404' },
+  { name: 'LinkedIn', icon: FaLinkedin, href: 'https://www.linkedin.com/in/yasir-sahto-507008364/', description: 'Yasir' },
+  { name: 'Email', icon: FaEnvelope, href: 'mailto:yasirsahto193@gmail.com', description: 'yasirsahto193@gmail.com' },
 ]
 
 const Contact = () => {
@@ -23,12 +23,19 @@ const Contact = () => {
     e.preventDefault()
     setIsSubmitting(true)
     
-    // Simulate API call
-    setTimeout(() => {
-      setStatus({ type: 'success', message: 'Thanks for reaching out! I\'ll get back to you soon.' })
+    try {
+      // Send email using mailto with form data
+      const subject = encodeURIComponent(`Portfolio Contact from ${formData.name}`)
+      const body = encodeURIComponent(`Name: ${formData.name}\nEmail: ${formData.email}\n\nMessage:\n${formData.message}`)
+      window.location.href = `mailto:dexadoors@gmail.com?subject=${subject}&body=${body}`
+      
+      setStatus({ type: 'success', message: 'Opening your email client...' })
       setFormData({ name: '', email: '', message: '' })
+    } catch (error) {
+      setStatus({ type: 'error', message: 'Something went wrong. Please try again.' })
+    } finally {
       setIsSubmitting(false)
-    }, 1000)
+    }
   }
 
   return (
@@ -58,7 +65,7 @@ const Contact = () => {
               </div>
               <div>
                 <p className="text-gray-400 text-sm">Location</p>
-                <p className="text-white font-medium">Pakistan 🇵🇰</p>
+                <p className="text-white font-medium">Karachi, Sindh, Pakistan 🇵🇰</p>
               </div>
             </div>
 

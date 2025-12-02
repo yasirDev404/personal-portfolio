@@ -31,7 +31,7 @@ const Hero = () => {
             className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-bold mb-6 leading-tight"
           >
             <span className="text-white">Hi, I'm </span>
-            <span className="gradient-text">Yasir Sahto</span>
+            <span className="gradient-text">Yasir</span>
           </motion.h1>
 
           {/* Role */}
@@ -118,8 +118,8 @@ const Hero = () => {
             className="flex items-center justify-center gap-6 mt-10"
           >
             {[
-              { Icon: FaGithub, href: 'https://github.com/yasirsahto', label: 'GitHub' },
-              { Icon: FaLinkedin, href: 'https://linkedin.com/in/yasirsahto', label: 'LinkedIn' },
+              { Icon: FaGithub, href: 'https://github.com/yasirDev404', label: 'GitHub' },
+              { Icon: FaLinkedin, href: 'https://www.linkedin.com/in/yasir-sahto-507008364/', label: 'LinkedIn' },
             ].map(({ Icon, href, label }) => (
               <a
                 key={label}
