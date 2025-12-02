@@ -69,7 +69,7 @@ const About = () => {
                 <p>
                   Hey! I'm <span className="text-white font-semibold">Yasir</span>, a{' '}
                   <span className="gradient-text font-semibold">15-year-old backend engineer</span> from{' '}
-                  <span className="text-white">Karachi, Pakistan 🇵🇰</span>. I started coding at 12.
+                  <span className="text-white">Islamabad, Pakistan 🇵🇰</span>. I started coding at 12.
                 </p>
                 <p>
                   I build <span className="text-neon-green">robust backend systems</span> with Node.js, Express, MongoDB, and PostgreSQL. Payment systems with{' '}

@@ -65,7 +65,7 @@ const Contact = () => {
               </div>
               <div>
                 <p className="text-gray-400 text-sm">Location</p>
-                <p className="text-white font-medium">Karachi, Sindh, Pakistan 🇵🇰</p>
+                <p className="text-white font-medium">Islamabad, Sindh, Pakistan 🇵🇰</p>
               </div>
             </div>
 

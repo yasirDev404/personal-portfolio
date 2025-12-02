@@ -134,7 +134,7 @@ const Skills = () => {
               {/* Deployment Note */}
               <div className="mt-6 p-4 rounded-xl bg-accent-primary/10 border border-accent-primary/20">
                 <p className="text-sm text-gray-300">
-                  <span className="text-accent-glow font-semibold">Deployment:</span> Vercel, Heroku, cPanel
+                  <span className="text-accent-glow font-semibold">Deployment:</span> Vercel, Heroku, cPanel, AWS
                 </p>
               </div>
             </Card>
