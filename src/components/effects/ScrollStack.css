@@ -1,0 +1,34 @@
+.scroll-stack-container {
+  position: relative;
+  width: 100%;
+}
+
+.scroll-stack-sticky {
+  position: relative;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 2rem;
+  padding: 2rem 0;
+}
+
+.scroll-stack-sticky.is-sticky {
+  position: sticky;
+  top: 100px;
+}
+
+.scroll-stack-card {
+  width: 100%;
+  max-width: 100%;
+  perspective: 1000px;
+  transform-style: preserve-3d;
+}
+
+.scroll-stack-item {
+  width: 100%;
+  height: 100%;
+  border-radius: 20px;
+  overflow: hidden;
+}
+

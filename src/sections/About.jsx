@@ -1,6 +1,5 @@
 import { motion } from 'framer-motion'
 import { 
-  HiCode, 
   HiServer, 
   HiDeviceMobile, 
   HiCloud,
@@ -9,12 +8,11 @@ import {
 import { FaRocket } from 'react-icons/fa'
 import { SiMongodb, SiPostgresql, SiStripe, SiDocker, SiAmazonaws } from 'react-icons/si'
 import { FaNodeJs } from 'react-icons/fa'
-import { Container, SectionTitle, Card } from '../components/ui'
+import { Container, SectionTitle } from '../components/ui'
 import { 
   SpotlightCard, 
-  BlurRevealText, 
-  SplitText,
-  TiltCard,
+  BlurRevealText,
+  TiltedCard,
   ElectricBorder,
 } from '../components/effects'
 
@@ -57,12 +55,6 @@ const technologies = [
 const About = () => {
   return (
     <section id="about" className="py-20 md:py-32 relative overflow-hidden">
-      {/* Background Effects */}
-      <div className="absolute inset-0">
-        <div className="absolute top-0 right-0 w-96 h-96 bg-accent-primary/10 rounded-full filter blur-[120px]" />
-        <div className="absolute bottom-0 left-0 w-96 h-96 bg-accent-secondary/10 rounded-full filter blur-[120px]" />
-      </div>
-
       <Container className="relative z-10">
         <SectionTitle 
           title="About Me" 
@@ -169,11 +161,13 @@ const About = () => {
           >
             <div className="grid grid-cols-3 gap-4">
               {technologies.map((tech, index) => (
-                <TiltCard 
-                  key={tech.name} 
-                  maxTilt={15} 
-                  scale={1.05}
-                  className="group"
+                <TiltedCard 
+                  key={tech.name}
+                  rotateAmplitude={15} 
+                  scaleOnHover={1.1}
+                  containerHeight="auto"
+                  containerWidth="100%"
+                  showTooltip={false}
                 >
                   <motion.div
                     className="aspect-square rounded-2xl bg-dark-800/60 border border-dark-600/50 flex flex-col items-center justify-center gap-3 hover:border-accent-primary/30 transition-all duration-300 cursor-pointer"
@@ -181,23 +175,13 @@ const About = () => {
                     whileInView={{ opacity: 1, scale: 1, rotateY: 0 }}
                     viewport={{ once: true }}
                     transition={{ delay: index * 0.1, type: 'spring', stiffness: 100 }}
-                    whileHover={{ 
-                      borderColor: tech.color,
-                      boxShadow: `0 0 30px ${tech.color}30`,
-                    }}
                   >
-                    <motion.div
-                      whileHover={{ rotate: 360, scale: 1.2 }}
-                      transition={{ duration: 0.5 }}
-                    >
-                      <tech.icon 
-                        className="text-4xl md:text-5xl transition-colors duration-300" 
-                        style={{ color: tech.color }}
-                      />
+                    <motion.div whileHover={{ rotate: 360, scale: 1.2 }} transition={{ duration: 0.5 }}>
+                      <tech.icon className="text-4xl md:text-5xl" style={{ color: tech.color }} />
                     </motion.div>
-                    <span className="text-xs md:text-sm text-gray-400 group-hover:text-white transition-colors">{tech.name}</span>
+                    <span className="text-xs md:text-sm text-gray-400">{tech.name}</span>
                   </motion.div>
-                </TiltCard>
+                </TiltedCard>
               ))}
             </div>
 
@@ -207,10 +191,10 @@ const About = () => {
               animate={{ y: [0, -10, 0] }}
               transition={{ duration: 3, repeat: Infinity }}
             >
-              <ElectricBorder color="#10b981" secondaryColor="#6366f1" speed={4} borderRadius={16}>
-                <div className="flex items-center gap-2 px-4 py-2 text-white">
+              <ElectricBorder color="#10b981" speed={1.5} chaos={0.8} thickness={2} className="rounded-xl">
+                <div className="flex items-center gap-2 px-4 py-2 text-white bg-dark-800 rounded-xl">
                   <FaRocket className="text-neon-green" />
-                  <span className="font-semibold">Shipping Fast!</span>
+                  <span className="font-semibold text-sm">Shipping Fast!</span>
                 </div>
               </ElectricBorder>
             </motion.div>
@@ -220,7 +204,14 @@ const About = () => {
         {/* Highlights Grid */}
         <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-6">
           {highlights.map((item, index) => (
-            <TiltCard key={item.title} maxTilt={8} scale={1.02}>
+            <TiltedCard 
+              key={item.title} 
+              rotateAmplitude={10} 
+              scaleOnHover={1.03}
+              containerHeight="100%"
+              containerWidth="100%"
+              showTooltip={false}
+            >
               <SpotlightCard 
                 spotlightColor={`${item.color}20`}
                 borderColor={`${item.color}40`}
@@ -247,7 +238,7 @@ const About = () => {
                   <p className="text-gray-400 text-sm leading-relaxed">{item.description}</p>
                 </motion.div>
               </SpotlightCard>
-            </TiltCard>
+            </TiltedCard>
           ))}
         </div>
       </Container>

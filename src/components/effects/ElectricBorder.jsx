@@ -1,84 +1,125 @@
-import { useRef, useEffect } from 'react'
-import { motion } from 'framer-motion'
+import { useEffect, useId, useLayoutEffect, useRef } from 'react';
+import './ElectricBorder.css';
 
-const ElectricBorder = ({ 
-  children, 
-  className = '', 
-  color = '#6366f1',
-  secondaryColor = '#a855f7',
-  speed = 3,
-  borderWidth = 2,
-  glowIntensity = 20,
-  borderRadius = 16,
-}) => {
+const ElectricBorder = ({ children, color = '#6366f1', speed = 1, chaos = 1, thickness = 2, className, style }) => {
+  const rawId = useId().replace(/[:]/g, '');
+  const filterId = `turbulent-displace-${rawId}`;
+  const svgRef = useRef(null);
+  const rootRef = useRef(null);
+  const strokeRef = useRef(null);
+
+  const updateAnim = () => {
+    const svg = svgRef.current;
+    const host = rootRef.current;
+    if (!svg || !host) return;
+
+    if (strokeRef.current) {
+      strokeRef.current.style.filter = `url(#${filterId})`;
+    }
+
+    const width = Math.max(1, Math.round(host.clientWidth || host.getBoundingClientRect().width || 0));
+    const height = Math.max(1, Math.round(host.clientHeight || host.getBoundingClientRect().height || 0));
+
+    const dyAnims = Array.from(svg.querySelectorAll('feOffset > animate[attributeName="dy"]'));
+    if (dyAnims.length >= 2) {
+      dyAnims[0].setAttribute('values', `${height}; 0`);
+      dyAnims[1].setAttribute('values', `0; -${height}`);
+    }
+
+    const dxAnims = Array.from(svg.querySelectorAll('feOffset > animate[attributeName="dx"]'));
+    if (dxAnims.length >= 2) {
+      dxAnims[0].setAttribute('values', `${width}; 0`);
+      dxAnims[1].setAttribute('values', `0; -${width}`);
+    }
+
+    const baseDur = 6;
+    const dur = Math.max(0.001, baseDur / (speed || 1));
+    [...dyAnims, ...dxAnims].forEach(a => a.setAttribute('dur', `${dur}s`));
+
+    const disp = svg.querySelector('feDisplacementMap');
+    if (disp) disp.setAttribute('scale', String(30 * (chaos || 1)));
+
+    const filterEl = svg.querySelector(`#${CSS.escape(filterId)}`);
+    if (filterEl) {
+      filterEl.setAttribute('x', '-200%');
+      filterEl.setAttribute('y', '-200%');
+      filterEl.setAttribute('width', '500%');
+      filterEl.setAttribute('height', '500%');
+    }
+
+    requestAnimationFrame(() => {
+      [...dyAnims, ...dxAnims].forEach(a => {
+        if (typeof a.beginElement === 'function') {
+          try {
+            a.beginElement();
+          } catch {
+            // Browser limitation
+          }
+        }
+      });
+    });
+  };
+
+  useEffect(() => {
+    updateAnim();
+  }, [speed, chaos]);
+
+  useLayoutEffect(() => {
+    if (!rootRef.current) return;
+    const ro = new ResizeObserver(() => updateAnim());
+    ro.observe(rootRef.current);
+    updateAnim();
+    return () => ro.disconnect();
+  }, []);
+
+  const vars = {
+    '--electric-border-color': color,
+    '--eb-border-width': `${thickness}px`
+  };
+
   return (
-    <div 
-      className={`relative group ${className}`}
-      style={{ borderRadius: `${borderRadius}px` }}
-    >
-      {/* Animated Electric Border */}
-      <div 
-        className="absolute -inset-[1px] rounded-[inherit] overflow-hidden"
-        style={{ padding: `${borderWidth}px` }}
-      >
-        {/* Rotating Gradient */}
-        <motion.div
-          className="absolute inset-0"
-          style={{
-            background: `conic-gradient(from 0deg, ${color}, ${secondaryColor}, #ec4899, #f97316, #10b981, ${color})`,
-          }}
-          animate={{ rotate: 360 }}
-          transition={{
-            duration: speed,
-            repeat: Infinity,
-            ease: 'linear',
-          }}
-        />
-        
-        {/* Electric Sparks */}
-        <div className="absolute inset-0">
-          {[...Array(8)].map((_, i) => (
-            <motion.div
-              key={i}
-              className="absolute w-1 h-1 rounded-full"
-              style={{
-                background: color,
-                boxShadow: `0 0 ${glowIntensity}px ${color}, 0 0 ${glowIntensity * 2}px ${color}`,
-                left: `${Math.random() * 100}%`,
-                top: `${Math.random() * 100}%`,
-              }}
-              animate={{
-                opacity: [0, 1, 0],
-                scale: [0, 1.5, 0],
-              }}
-              transition={{
-                duration: 0.8,
-                repeat: Infinity,
-                delay: i * 0.2,
-              }}
+    <div ref={rootRef} className={`electric-border ${className ?? ''}`} style={{ ...vars, ...style }}>
+      <svg ref={svgRef} className="eb-svg" aria-hidden="true" focusable="false">
+        <defs>
+          <filter id={filterId} colorInterpolationFilters="sRGB" x="-20%" y="-20%" width="140%" height="140%">
+            <feTurbulence type="turbulence" baseFrequency="0.02" numOctaves="10" result="noise1" seed="1" />
+            <feOffset in="noise1" dx="0" dy="0" result="offsetNoise1">
+              <animate attributeName="dy" values="700; 0" dur="6s" repeatCount="indefinite" calcMode="linear" />
+            </feOffset>
+            <feTurbulence type="turbulence" baseFrequency="0.02" numOctaves="10" result="noise2" seed="1" />
+            <feOffset in="noise2" dx="0" dy="0" result="offsetNoise2">
+              <animate attributeName="dy" values="0; -700" dur="6s" repeatCount="indefinite" calcMode="linear" />
+            </feOffset>
+            <feTurbulence type="turbulence" baseFrequency="0.02" numOctaves="10" result="noise1" seed="2" />
+            <feOffset in="noise1" dx="0" dy="0" result="offsetNoise3">
+              <animate attributeName="dx" values="490; 0" dur="6s" repeatCount="indefinite" calcMode="linear" />
+            </feOffset>
+            <feTurbulence type="turbulence" baseFrequency="0.02" numOctaves="10" result="noise2" seed="2" />
+            <feOffset in="noise2" dx="0" dy="0" result="offsetNoise4">
+              <animate attributeName="dx" values="0; -490" dur="6s" repeatCount="indefinite" calcMode="linear" />
+            </feOffset>
+            <feComposite in="offsetNoise1" in2="offsetNoise2" result="part1" />
+            <feComposite in="offsetNoise3" in2="offsetNoise4" result="part2" />
+            <feBlend in="part1" in2="part2" mode="color-dodge" result="combinedNoise" />
+            <feDisplacementMap
+              in="SourceGraphic"
+              in2="combinedNoise"
+              scale="30"
+              xChannelSelector="R"
+              yChannelSelector="B"
             />
-          ))}
-        </div>
+          </filter>
+        </defs>
+      </svg>
+      <div className="eb-layers">
+        <div ref={strokeRef} className="eb-stroke" />
+        <div className="eb-glow-1" />
+        <div className="eb-glow-2" />
+        <div className="eb-background-glow" />
       </div>
-
-      {/* Inner Content Container */}
-      <div 
-        className="relative bg-dark-800 rounded-[inherit] z-10"
-        style={{ borderRadius: `${borderRadius - borderWidth}px` }}
-      >
-        {children}
-      </div>
-
-      {/* Glow Effect */}
-      <div 
-        className="absolute inset-0 rounded-[inherit] opacity-0 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none"
-        style={{
-          boxShadow: `0 0 ${glowIntensity}px ${color}, 0 0 ${glowIntensity * 2}px ${secondaryColor}`,
-        }}
-      />
+      <div className="eb-content">{children}</div>
     </div>
-  )
-}
+  );
+};
 
-export default ElectricBorder
-
+export default ElectricBorder;

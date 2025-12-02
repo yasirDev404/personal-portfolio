@@ -1,0 +1,47 @@
+.glass-surface {
+  position: relative;
+  overflow: hidden;
+  isolation: isolate;
+}
+
+.glass-backdrop {
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  background: rgba(15, 15, 25, 0.7);
+  z-index: 0;
+}
+
+.glass-refraction {
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  pointer-events: none;
+  z-index: 1;
+  transition: background 0.3s ease;
+}
+
+.glass-border {
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  pointer-events: none;
+  z-index: 2;
+}
+
+.glass-shine {
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  pointer-events: none;
+  z-index: 3;
+  transition: background 0.5s ease;
+}
+
+.glass-content {
+  position: relative;
+  z-index: 4;
+  height: 100%;
+}
+

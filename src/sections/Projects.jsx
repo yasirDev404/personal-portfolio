@@ -1,7 +1,7 @@
 import { motion } from 'framer-motion'
 import { FaGithub, FaExternalLinkAlt } from 'react-icons/fa'
-import { Container, SectionTitle, TechBadge, Button } from '../components/ui'
-import { SpotlightCard, ElectricBorder, TiltCard, MagneticButton } from '../components/effects'
+import { Container, SectionTitle, Button } from '../components/ui'
+import { TiltedCard, ElectricBorder, MagneticButton } from '../components/effects'
 
 const projects = [
   {
@@ -11,7 +11,7 @@ const projects = [
     github: 'https://github.com/yasirsahto',
     demo: '#',
     color: '#10b981',
-    featured: true,
+    gradient: 'from-emerald-500/20 to-green-600/20',
   },
   {
     title: 'Fast Food Restaurant Backend',
@@ -20,7 +20,7 @@ const projects = [
     github: 'https://github.com/yasirsahto',
     demo: '#',
     color: '#f97316',
-    featured: false,
+    gradient: 'from-orange-500/20 to-amber-600/20',
   },
   {
     title: 'Secure Admin/Vendor Auth System',
@@ -29,7 +29,7 @@ const projects = [
     github: 'https://github.com/yasirsahto',
     demo: '#',
     color: '#3b82f6',
-    featured: true,
+    gradient: 'from-blue-500/20 to-indigo-600/20',
   },
   {
     title: 'Stripe Billing Integrations',
@@ -38,7 +38,7 @@ const projects = [
     github: 'https://github.com/yasirsahto',
     demo: '#',
     color: '#8b5cf6',
-    featured: false,
+    gradient: 'from-violet-500/20 to-purple-600/20',
   },
   {
     title: 'Mobile App - React Native',
@@ -47,7 +47,7 @@ const projects = [
     github: 'https://github.com/yasirsahto',
     demo: '#',
     color: '#ec4899',
-    featured: true,
+    gradient: 'from-pink-500/20 to-rose-600/20',
   },
   {
     title: 'SaaS Starter Architecture',
@@ -56,141 +56,118 @@ const projects = [
     github: 'https://github.com/yasirsahto',
     demo: '#',
     color: '#6366f1',
-    featured: false,
+    gradient: 'from-indigo-500/20 to-violet-600/20',
   },
 ]
 
 const ProjectCard = ({ project, index }) => {
-  const CardWrapper = project.featured ? ElectricBorder : SpotlightCard
-
   return (
-    <motion.div
-      initial={{ opacity: 0, y: 30 }}
-      whileInView={{ opacity: 1, y: 0 }}
-      viewport={{ once: true }}
-      transition={{ duration: 0.5, delay: index * 0.1 }}
+    <TiltedCard
+      containerHeight="100%"
+      containerWidth="100%"
+      rotateAmplitude={8}
+      scaleOnHover={1.02}
+      showTooltip={false}
+      className="h-full"
     >
-      <TiltCard maxTilt={10} scale={1.02} className="h-full group">
-        {project.featured ? (
-          <ElectricBorder 
-            color={project.color} 
-            secondaryColor="#a855f7"
-            speed={5}
-            borderRadius={20}
-            className="h-full"
-          >
-            <ProjectCardContent project={project} index={index} />
-          </ElectricBorder>
-        ) : (
-          <SpotlightCard 
-            spotlightColor={`${project.color}20`}
-            borderColor={`${project.color}40`}
-            className="h-full"
-          >
-            <ProjectCardContent project={project} index={index} />
-          </SpotlightCard>
-        )}
-      </TiltCard>
-    </motion.div>
+      <div className={`h-full p-6 rounded-2xl bg-gradient-to-br ${project.gradient} backdrop-blur-sm border border-white/10`}>
+        <div className="h-full flex flex-col">
+          {/* Header */}
+          <div className="flex items-start justify-between mb-4">
+            <motion.span 
+              className="text-5xl font-bold opacity-20"
+              style={{ color: project.color }}
+            >
+              0{index + 1}
+            </motion.span>
+            <div className="flex gap-2">
+              <MagneticButton strength={0.3} radius={40}>
+                <motion.a
+                  href={project.github}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="w-10 h-10 rounded-lg bg-dark-700/80 flex items-center justify-center text-gray-400 hover:text-white transition-colors"
+                  whileHover={{ scale: 1.1 }}
+                >
+                  <FaGithub size={18} />
+                </motion.a>
+              </MagneticButton>
+              <MagneticButton strength={0.3} radius={40}>
+                <motion.a
+                  href={project.demo}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="w-10 h-10 rounded-lg bg-dark-700/80 flex items-center justify-center text-gray-400 hover:text-white transition-colors"
+                  whileHover={{ scale: 1.1 }}
+                >
+                  <FaExternalLinkAlt size={16} />
+                </motion.a>
+              </MagneticButton>
+            </div>
+          </div>
+
+          {/* Title */}
+          <h3 className="text-xl font-bold text-white mb-3">{project.title}</h3>
+
+          {/* Description */}
+          <p className="text-gray-400 text-sm leading-relaxed mb-4 flex-grow">
+            {project.description}
+          </p>
+
+          {/* Tech Stack */}
+          <div className="flex flex-wrap gap-2 mt-auto">
+            {project.tech.map((tech) => (
+              <span
+                key={tech}
+                className="px-3 py-1 text-xs font-medium rounded-full bg-dark-700/60 border border-white/10 text-gray-300"
+              >
+                {tech}
+              </span>
+            ))}
+          </div>
+        </div>
+      </div>
+    </TiltedCard>
   )
 }
 
-const ProjectCardContent = ({ project, index }) => (
-  <div className="p-6 h-full flex flex-col">
-    {/* Project Number & Featured Badge */}
-    <div className="flex items-center justify-between mb-4">
-      <div className="flex items-center gap-3">
-        <span 
-          className="text-4xl font-bold opacity-20 group-hover:opacity-40 transition-opacity"
-          style={{ color: project.color }}
-        >
-          0{index + 1}
-        </span>
-        {project.featured && (
-          <motion.span 
-            className="px-2 py-0.5 text-[10px] font-semibold rounded-full bg-gradient-to-r from-accent-primary to-accent-secondary text-white uppercase tracking-wider"
-            animate={{ scale: [1, 1.05, 1] }}
-            transition={{ duration: 2, repeat: Infinity }}
-          >
-            Featured
-          </motion.span>
-        )}
-      </div>
-      <div className="flex gap-3">
-        <MagneticButton strength={0.3} radius={50}>
-          <motion.a
-            href={project.github}
-            target="_blank"
-            rel="noopener noreferrer"
-            className="w-9 h-9 rounded-lg bg-dark-700/80 flex items-center justify-center text-gray-400 hover:text-white hover:bg-dark-600 transition-all duration-300"
-            whileHover={{ y: -2 }}
-          >
-            <FaGithub size={18} />
-          </motion.a>
-        </MagneticButton>
-        <MagneticButton strength={0.3} radius={50}>
-          <motion.a
-            href={project.demo}
-            target="_blank"
-            rel="noopener noreferrer"
-            className="w-9 h-9 rounded-lg bg-dark-700/80 flex items-center justify-center text-gray-400 hover:text-accent-primary transition-all duration-300"
-            whileHover={{ y: -2 }}
-            style={{ '--hover-color': project.color }}
-          >
-            <FaExternalLinkAlt size={16} />
-          </motion.a>
-        </MagneticButton>
-      </div>
-    </div>
-
-    {/* Title */}
-    <h3 className="text-xl font-bold text-white mb-3 group-hover:text-accent-glow transition-colors">
-      {project.title}
-    </h3>
-
-    {/* Description */}
-    <p className="text-gray-400 text-sm leading-relaxed mb-4 flex-grow">
-      {project.description}
-    </p>
-
-    {/* Tech Stack */}
-    <div className="flex flex-wrap gap-2 mt-auto">
-      {project.tech.map((tech) => (
-        <motion.span
-          key={tech}
-          className="px-3 py-1 text-xs font-medium rounded-full bg-dark-700/60 border border-dark-500 text-gray-300"
-          whileHover={{ 
-            scale: 1.05, 
-            borderColor: project.color,
-            color: '#fff',
-          }}
-        >
-          {tech}
-        </motion.span>
-      ))}
-    </div>
-  </div>
-)
-
 const Projects = () => {
   return (
-    <section id="projects" className="py-20 md:py-32 relative overflow-hidden bg-dark-800/30">
-      {/* Background Effects */}
-      <div className="absolute inset-0">
-        <div className="absolute top-1/2 left-0 w-96 h-96 bg-accent-primary/5 rounded-full filter blur-[120px]" />
-        <div className="absolute top-1/4 right-0 w-96 h-96 bg-accent-secondary/5 rounded-full filter blur-[120px]" />
-      </div>
+    <section id="projects" className="py-20 md:py-32 relative overflow-hidden">
+      {/* Background - consistent with rest of site */}
+      <div className="absolute inset-0 bg-dark-800/50" />
 
       <Container className="relative z-10">
         <SectionTitle 
           title="My Projects" 
-          subtitle="Real-world backends and applications used by actual businesses"
+          subtitle="Real-world backends and applications used by actual businesses. Scroll to explore!"
         />
 
-        {/* Projects Grid */}
+        {/* Scrollable Projects Grid */}
         <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6 lg:gap-8">
           {projects.map((project, index) => (
-            <ProjectCard key={project.title} project={project} index={index} />
+            <motion.div
+              key={project.title}
+              initial={{ opacity: 0, y: 50 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true, margin: "-100px" }}
+              transition={{ 
+                duration: 0.6, 
+                delay: index * 0.1,
+                ease: [0.25, 0.1, 0.25, 1]
+              }}
+              className="h-[350px]"
+            >
+              <ElectricBorder 
+                color={project.color} 
+                speed={1.5}
+                chaos={0.5}
+                thickness={2}
+                className="h-full rounded-2xl"
+              >
+                <ProjectCard project={project} index={index} />
+              </ElectricBorder>
+            </motion.div>
           ))}
         </div>
 
@@ -203,15 +180,17 @@ const Projects = () => {
           transition={{ delay: 0.5 }}
         >
           <MagneticButton strength={0.3} radius={120}>
-            <Button
-              href="https://github.com/yasirsahto"
-              target="_blank"
-              variant="outline"
-              icon={<FaGithub />}
-              iconPosition="left"
-            >
-              View More on GitHub
-            </Button>
+            <ElectricBorder color="#6366f1" speed={1.2} chaos={0.4} thickness={2} className="rounded-xl inline-block">
+              <Button
+                href="https://github.com/yasirsahto"
+                target="_blank"
+                variant="secondary"
+                icon={<FaGithub />}
+                iconPosition="left"
+              >
+                View More on GitHub
+              </Button>
+            </ElectricBorder>
           </MagneticButton>
         </motion.div>
       </Container>

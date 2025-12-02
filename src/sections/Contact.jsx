@@ -3,7 +3,7 @@ import { motion } from 'framer-motion'
 import { FaGithub, FaLinkedin, FaEnvelope, FaPaperPlane } from 'react-icons/fa'
 import { HiLocationMarker } from 'react-icons/hi'
 import { Container, SectionTitle, Button } from '../components/ui'
-import { SpotlightCard, MagneticButton, ElectricBorder, TiltCard } from '../components/effects'
+import { SpotlightCard, MagneticButton, ElectricBorder, TiltedCard } from '../components/effects'
 
 const socialLinks = [
   { 
@@ -11,7 +11,6 @@ const socialLinks = [
     icon: FaGithub, 
     href: 'https://github.com/yasirsahto',
     color: '#ffffff',
-    hoverColor: '#333',
     description: '@yasirsahto'
   },
   { 
@@ -19,7 +18,6 @@ const socialLinks = [
     icon: FaLinkedin, 
     href: 'https://linkedin.com/in/yasirsahto',
     color: '#0a66c2',
-    hoverColor: '#0a66c2',
     description: 'Yasir Sahto'
   },
   { 
@@ -27,7 +25,6 @@ const socialLinks = [
     icon: FaEnvelope, 
     href: 'mailto:contact@yasirsahto.dev',
     color: '#ea4335',
-    hoverColor: '#ea4335',
     description: 'contact@yasirsahto.dev'
   },
 ]
@@ -86,7 +83,7 @@ const Contact = () => {
   }
 
   const inputClasses = (fieldName) => `
-    w-full px-4 py-3 rounded-xl bg-dark-800/80 border text-white placeholder-gray-500 
+    w-full px-4 py-3 rounded-xl bg-dark-700/80 border text-white placeholder-gray-500 
     transition-all duration-300 outline-none
     ${focusedField === fieldName 
       ? 'border-accent-primary shadow-[0_0_20px_rgba(99,102,241,0.2)]' 
@@ -95,13 +92,7 @@ const Contact = () => {
   `
 
   return (
-    <section id="contact" className="py-20 md:py-32 relative overflow-hidden bg-dark-800/30">
-      {/* Background Effects */}
-      <div className="absolute inset-0">
-        <div className="absolute bottom-0 left-1/4 w-96 h-96 bg-accent-primary/10 rounded-full filter blur-[120px]" />
-        <div className="absolute top-1/4 right-0 w-96 h-96 bg-accent-secondary/10 rounded-full filter blur-[120px]" />
-      </div>
-
+    <section id="contact" className="py-20 md:py-32 relative overflow-hidden">
       <Container className="relative z-10">
         <SectionTitle 
           title="Get In Touch" 
@@ -126,7 +117,7 @@ const Contact = () => {
             </div>
 
             {/* Location */}
-            <TiltCard maxTilt={8}>
+            <TiltedCard rotateAmplitude={8} scaleOnHover={1.02} showTooltip={false} containerWidth="100%">
               <SpotlightCard 
                 spotlightColor="rgba(99, 102, 241, 0.15)"
                 className="mb-8"
@@ -150,7 +141,7 @@ const Contact = () => {
                   </div>
                 </motion.div>
               </SpotlightCard>
-            </TiltCard>
+            </TiltedCard>
 
             {/* Social Links */}
             <div className="space-y-4">
@@ -174,7 +165,6 @@ const Contact = () => {
                     <motion.div 
                       className="w-10 h-10 rounded-lg bg-dark-700 flex items-center justify-center text-gray-400 group-hover:text-white transition-colors"
                       whileHover={{ scale: 1.1, rotate: 10 }}
-                      style={{ '--hover-color': link.color }}
                     >
                       <link.icon size={20} />
                     </motion.div>
@@ -195,9 +185,9 @@ const Contact = () => {
             viewport={{ once: true }}
             transition={{ duration: 0.5 }}
           >
-            <TiltCard maxTilt={5} scale={1.01}>
-              <ElectricBorder color="#6366f1" secondaryColor="#a855f7" speed={5} borderRadius={24}>
-                <form onSubmit={handleSubmit} className="p-6 lg:p-8 space-y-6">
+            <TiltedCard rotateAmplitude={5} scaleOnHover={1.01} showTooltip={false} containerWidth="100%" containerHeight="100%">
+              <ElectricBorder color="#6366f1" speed={1.5} chaos={0.5} thickness={2} className="rounded-2xl h-full">
+                <form onSubmit={handleSubmit} className="p-6 lg:p-8 space-y-6 bg-dark-800/80 rounded-2xl h-full">
                   {/* Name Field */}
                   <motion.div
                     initial={{ opacity: 0, y: 20 }}
@@ -317,7 +307,7 @@ const Contact = () => {
                   </motion.div>
                 </form>
               </ElectricBorder>
-            </TiltCard>
+            </TiltedCard>
           </motion.div>
         </div>
       </Container>

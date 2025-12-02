@@ -17,7 +17,7 @@ import {
 import { HiDeviceMobile, HiServer, HiCode } from 'react-icons/hi'
 import { FaRoute, FaSave } from 'react-icons/fa'
 import { Container, SectionTitle } from '../components/ui'
-import { SpotlightCard, TiltCard, ElectricBorder } from '../components/effects'
+import { ElectricBorder, TiltedCard } from '../components/effects'
 
 const backendSkills = [
   { name: 'Node.js', icon: SiNodedotjs, color: '#68a063', level: 95 },
@@ -90,8 +90,6 @@ const SkillCard = ({ skill, index }) => {
               <motion.span 
                 className="text-xs font-semibold"
                 style={{ color: skill.color }}
-                initial={{ opacity: 0.5 }}
-                whileHover={{ opacity: 1, scale: 1.1 }}
               >
                 {skill.level}%
               </motion.span>
@@ -128,19 +126,13 @@ const SkillCard = ({ skill, index }) => {
 const Skills = () => {
   return (
     <section id="skills" className="py-20 md:py-32 relative overflow-hidden">
-      {/* Background Effects */}
-      <div className="absolute inset-0">
-        <div className="absolute top-0 left-1/4 w-96 h-96 bg-neon-green/5 rounded-full filter blur-[120px]" />
-        <div className="absolute bottom-0 right-1/4 w-96 h-96 bg-neon-purple/5 rounded-full filter blur-[120px]" />
-      </div>
-
       <Container className="relative z-10">
         <SectionTitle 
           title="Skills & Expertise" 
           subtitle="Technologies I use to build powerful backend systems and mobile applications"
         />
 
-        <div className="grid lg:grid-cols-2 gap-12">
+        <div className="grid lg:grid-cols-2 gap-8">
           {/* Backend Skills */}
           <motion.div
             initial={{ opacity: 0, x: -30 }}
@@ -148,9 +140,15 @@ const Skills = () => {
             viewport={{ once: true }}
             transition={{ duration: 0.5 }}
           >
-            <TiltCard maxTilt={5} scale={1.01}>
-              <ElectricBorder color="#10b981" secondaryColor="#22c55e" speed={6} borderRadius={24}>
-                <div className="p-6 lg:p-8">
+            <TiltedCard 
+              rotateAmplitude={5} 
+              scaleOnHover={1.01}
+              containerHeight="100%"
+              containerWidth="100%"
+              showTooltip={false}
+            >
+              <ElectricBorder color="#10b981" speed={1.5} chaos={0.6} thickness={2} className="rounded-2xl">
+                <div className="p-6 lg:p-8 bg-dark-800/80 rounded-2xl">
                   {/* Header */}
                   <div className="flex items-center gap-4 mb-8">
                     <motion.div 
@@ -173,7 +171,7 @@ const Skills = () => {
                   </div>
                 </div>
               </ElectricBorder>
-            </TiltCard>
+            </TiltedCard>
           </motion.div>
 
           {/* Mobile Skills */}
@@ -183,9 +181,15 @@ const Skills = () => {
             viewport={{ once: true }}
             transition={{ duration: 0.5 }}
           >
-            <TiltCard maxTilt={5} scale={1.01}>
-              <ElectricBorder color="#8b5cf6" secondaryColor="#a855f7" speed={6} borderRadius={24}>
-                <div className="p-6 lg:p-8">
+            <TiltedCard 
+              rotateAmplitude={5} 
+              scaleOnHover={1.01}
+              containerHeight="100%"
+              containerWidth="100%"
+              showTooltip={false}
+            >
+              <ElectricBorder color="#8b5cf6" speed={1.5} chaos={0.6} thickness={2} className="rounded-2xl">
+                <div className="p-6 lg:p-8 bg-dark-800/80 rounded-2xl">
                   {/* Header */}
                   <div className="flex items-center gap-4 mb-8">
                     <motion.div 
@@ -214,10 +218,6 @@ const Skills = () => {
                     whileInView={{ opacity: 1, y: 0 }}
                     viewport={{ once: true }}
                     transition={{ delay: 0.5 }}
-                    whileHover={{ 
-                      borderColor: 'rgba(99, 102, 241, 0.5)',
-                      boxShadow: '0 0 30px rgba(99, 102, 241, 0.1)',
-                    }}
                   >
                     <p className="text-sm text-gray-300">
                       <span className="text-accent-glow font-semibold">Deployment Expertise:</span> I actively deploy applications using{' '}
@@ -228,7 +228,7 @@ const Skills = () => {
                   </motion.div>
                 </div>
               </ElectricBorder>
-            </TiltCard>
+            </TiltedCard>
           </motion.div>
         </div>
       </Container>

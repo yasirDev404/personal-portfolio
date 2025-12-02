@@ -5,10 +5,9 @@ import { Container, Button } from '../components/ui'
 import { 
   GlitchText, 
   MagneticButton, 
-  ParticleField,
+  ShapeBlur,
   SplitText,
   GradientText,
-  TypewriterText,
   ElectricBorder,
 } from '../components/effects'
 
@@ -42,25 +41,26 @@ const Hero = () => {
   return (
     <section
       id="home"
-      className="relative min-h-screen flex items-center justify-center overflow-hidden pt-20"
+      className="relative min-h-screen flex items-center justify-center overflow-hidden pt-24"
     >
-      {/* Background Effects */}
-      <div className="absolute inset-0 bg-dark-900">
-        {/* Gradient Orbs */}
-        <div className="absolute top-1/4 left-1/4 w-96 h-96 bg-accent-primary/20 rounded-full filter blur-[128px] animate-pulse" />
-        <div className="absolute bottom-1/4 right-1/4 w-96 h-96 bg-accent-secondary/20 rounded-full filter blur-[128px] animate-pulse" style={{ animationDelay: '1s' }} />
-        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] bg-accent-tertiary/10 rounded-full filter blur-[150px]" />
+      {/* Fixed Background - Same across all screens */}
+      <div className="fixed inset-0 bg-dark-900 -z-20">
+        {/* Base gradient that spans full viewport */}
+        <div className="absolute inset-0 bg-gradient-to-b from-dark-900 via-dark-800 to-dark-900" />
         
-        {/* Grid Pattern */}
-        <div className="absolute inset-0 bg-grid opacity-30" />
-        
-        {/* Particle Field */}
-        <ParticleField 
-          particleCount={60} 
+        {/* ShapeBlur Background Effect */}
+        <ShapeBlur 
           colors={['#6366f1', '#a855f7', '#ec4899', '#10b981']}
-          maxSize={3}
-          speed={0.5}
+          blur={150}
+          shapeSize={0.4}
+          roundness={0.7}
         />
+        
+        {/* Grid Pattern Overlay */}
+        <div className="absolute inset-0 bg-grid opacity-20" />
+        
+        {/* Vignette Effect */}
+        <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,transparent_0%,rgba(10,10,15,0.8)_100%)]" />
       </div>
 
       {/* Floating Icons */}
@@ -68,7 +68,7 @@ const Hero = () => {
         {floatingIcons.map(({ Icon, color, delay }, index) => (
           <motion.div
             key={index}
-            className={`absolute ${color} opacity-20`}
+            className={`absolute ${color} opacity-10`}
             style={{
               top: `${20 + index * 25}%`,
               left: `${10 + index * 35}%`,
@@ -84,7 +84,7 @@ const Hero = () => {
               ease: 'easeInOut',
             }}
           >
-            <Icon size={60} />
+            <Icon size={80} />
           </motion.div>
         ))}
       </div>
@@ -97,15 +97,15 @@ const Hero = () => {
           className="text-center max-w-4xl mx-auto"
         >
           {/* Badge */}
-          <motion.div variants={itemVariants} className="mb-6">
+          <motion.div variants={itemVariants} className="mb-8">
             <ElectricBorder 
               color="#10b981" 
-              secondaryColor="#6366f1" 
-              speed={4}
-              borderRadius={50}
-              className="inline-block"
+              speed={1.5}
+              chaos={0.8}
+              thickness={2}
+              className="inline-block rounded-full"
             >
-              <span className="inline-flex items-center gap-2 px-5 py-2.5 text-sm text-gray-300">
+              <span className="inline-flex items-center gap-2 px-5 py-2.5 text-sm text-gray-300 bg-dark-800 rounded-full">
                 <span className="w-2 h-2 rounded-full bg-neon-green animate-pulse" />
                 Available for new projects
               </span>
@@ -149,7 +149,7 @@ const Hero = () => {
             </span>
           </motion.div>
 
-          {/* Bio with Typewriter */}
+          {/* Bio */}
           <motion.div
             variants={itemVariants}
             className="text-lg md:text-xl text-gray-400 max-w-3xl mx-auto mb-8 leading-relaxed"
@@ -164,7 +164,7 @@ const Hero = () => {
             Built <span className="text-white font-semibold">8+ real-world backends</span> used by actual businesses 🚀
           </motion.div>
 
-          {/* Tech Stack Pills with Hover Effect */}
+          {/* Tech Stack Pills */}
           <motion.div
             variants={itemVariants}
             className="flex flex-wrap justify-center gap-2 mb-10"
@@ -193,14 +193,16 @@ const Hero = () => {
             className="flex flex-col sm:flex-row items-center justify-center gap-4"
           >
             <MagneticButton strength={0.4} radius={150}>
-              <Button
-                href="#contact"
-                size="lg"
-                icon={<FaRocket />}
-                className="min-w-[180px] glow-primary"
-              >
-                Hire Me
-              </Button>
+              <ElectricBorder color="#6366f1" speed={1.2} chaos={0.6} thickness={2} className="rounded-xl">
+                <Button
+                  href="#contact"
+                  size="lg"
+                  icon={<FaRocket />}
+                  className="min-w-[180px]"
+                >
+                  Hire Me
+                </Button>
+              </ElectricBorder>
             </MagneticButton>
             <MagneticButton strength={0.4} radius={150}>
               <Button
@@ -215,7 +217,7 @@ const Hero = () => {
             </MagneticButton>
           </motion.div>
 
-          {/* Social Links with Magnetic Effect */}
+          {/* Social Links */}
           <motion.div
             variants={itemVariants}
             className="flex items-center justify-center gap-6 mt-10"
