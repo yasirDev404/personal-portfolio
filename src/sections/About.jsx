@@ -7,6 +7,8 @@ import {
 } from 'react-icons/hi'
 import { FaRocket } from 'react-icons/fa'
 import { SiMongodb, SiPostgresql, SiStripe, SiDocker, SiAmazonaws, SiNodedotjs } from 'react-icons/si'
+import ProfileCard from '../components/ProfileCard'
+import '../components/ProfileCard.css'
 
 const Container = ({ children, className = '' }) => (
   <div className={`max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 ${className}`}>
@@ -82,32 +84,6 @@ const technologies = [
   { icon: SiAmazonaws, name: 'AWS', color: 'text-orange-400' },
 ]
 
-// Mock ProfileCard component since we don't have the actual implementation
-const ProfileCard = ({ name, title, handle, status, contactText, onContactClick }) => (
-  <div className="bg-gray-900/80 border border-gray-800 rounded-3xl p-8 backdrop-blur-sm">
-    <div className="flex flex-col items-center text-center space-y-4">
-      <div className="w-32 h-32 rounded-full bg-gradient-to-br from-blue-400 to-purple-500 flex items-center justify-center text-4xl font-bold text-white">
-        Y
-      </div>
-      <div>
-        <h3 className="text-2xl font-bold text-white">{name}</h3>
-        <p className="text-gray-400">{title}</p>
-        <p className="text-sm text-gray-500">@{handle}</p>
-      </div>
-      <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-green-500/10 border border-green-500/20">
-        <div className="w-2 h-2 rounded-full bg-green-400 animate-pulse"></div>
-        <span className="text-sm text-green-400">{status}</span>
-      </div>
-      <button
-        onClick={onContactClick}
-        className="w-full bg-gradient-to-r from-blue-500 to-purple-500 text-white px-6 py-3 rounded-xl font-semibold hover:shadow-lg transition-all"
-      >
-        {contactText}
-      </button>
-    </div>
-  </div>
-)
-
 const About = () => {
   const handleContactClick = () => {
     // Scroll to Book A Call section
@@ -140,6 +116,15 @@ const About = () => {
                 handle="yasirDev404"
                 status="Available for work"
                 contactText="Book a Call"
+                avatarUrl="/avatar.png"
+                miniAvatarUrl="/avatar.png"
+                iconUrl="https://assets.codepen.io/13471/holo-icons.svg"
+                grainUrl="https://assets.codepen.io/13471/noise.png"
+                showUserInfo={true}
+                enableTilt={true}
+                enableMobileTilt={true}
+                mobileTiltSensitivity={5}
+                behindGlowEnabled={true}
                 onContactClick={handleContactClick}
               />
             </div>

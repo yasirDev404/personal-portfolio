@@ -1,6 +1,7 @@
 import { useEffect } from 'react'
 import { Navbar, Footer } from './components/layout'
 import { Hero, About, Projects, Skills, Contact } from './sections'
+import Particles from './components/effects/Particles'
 
 function App() {
   useEffect(() => {
@@ -22,28 +23,49 @@ function App() {
 
   return (
     <div className="min-h-screen bg-dark-900 text-white">
-      {/* Fixed Background */}
-      <div className="fixed inset-0 -z-10">
-        <div className="absolute inset-0 bg-dark-900" />
-        <div className="absolute top-0 left-1/4 w-96 h-96 bg-accent-primary/10 rounded-full filter blur-[150px]" />
-        <div className="absolute bottom-1/4 right-1/4 w-96 h-96 bg-accent-secondary/10 rounded-full filter blur-[150px]" />
-        <div className="absolute inset-0 bg-grid opacity-20" />
+      {/* Fixed Particles Background */}
+      <div 
+        className="particles-bg"
+        style={{ 
+          position: 'fixed', 
+          top: 0, 
+          left: 0, 
+          width: '100vw', 
+          height: '100vh', 
+          zIndex: 0,
+          pointerEvents: 'none',
+          background: '#0a0a0f'
+        }}
+      >
+        <Particles
+          particleColors={['#6366f1', '#a855f7', '#ec4899', '#3b82f6']}
+          particleCount={200}
+          particleSpread={10}
+          speed={0.1}
+          particleBaseSize={100}
+          moveParticlesOnHover={false}
+          alphaParticles={false}
+          disableRotation={false}
+        />
       </div>
 
-      {/* Navbar */}
-      <Navbar />
+      {/* Content wrapper with higher z-index */}
+      <div style={{ position: 'relative', zIndex: 1 }}>
+        {/* Navbar */}
+        <Navbar />
 
-      {/* Main Content */}
-      <main>
-        <Hero />
-        <About />
-        <Projects />
-        <Skills />
-        <Contact />
-      </main>
+        {/* Main Content */}
+        <main>
+          <Hero />
+          <About />
+          <Projects />
+          <Skills />
+          <Contact />
+        </main>
 
-      {/* Footer */}
-      <Footer />
+        {/* Footer */}
+        <Footer />
+      </div>
     </div>
   )
 }
