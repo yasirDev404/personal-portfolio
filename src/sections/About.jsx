@@ -7,8 +7,6 @@ import {
 } from 'react-icons/hi'
 import { FaRocket } from 'react-icons/fa'
 import { SiMongodb, SiPostgresql, SiStripe, SiDocker, SiAmazonaws, SiNodedotjs } from 'react-icons/si'
-import ProfileCard from '../components/ProfileCard'
-import '../components/ProfileCard.css'
 
 const Container = ({ children, className = '' }) => (
   <div className={`max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 ${className}`}>
@@ -84,6 +82,32 @@ const technologies = [
   { icon: SiAmazonaws, name: 'AWS', color: 'text-orange-400' },
 ]
 
+// Mock ProfileCard component since we don't have the actual implementation
+const ProfileCard = ({ name, title, handle, status, contactText, onContactClick }) => (
+  <div className="bg-gray-900/80 border border-gray-800 rounded-3xl p-8 backdrop-blur-sm">
+    <div className="flex flex-col items-center text-center space-y-4">
+      <div className="w-32 h-32 rounded-full bg-gradient-to-br from-blue-400 to-purple-500 flex items-center justify-center text-4xl font-bold text-white">
+        Y
+      </div>
+      <div>
+        <h3 className="text-2xl font-bold text-white">{name}</h3>
+        <p className="text-gray-400">{title}</p>
+        <p className="text-sm text-gray-500">@{handle}</p>
+      </div>
+      <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-green-500/10 border border-green-500/20">
+        <div className="w-2 h-2 rounded-full bg-green-400 animate-pulse"></div>
+        <span className="text-sm text-green-400">{status}</span>
+      </div>
+      <button
+        onClick={onContactClick}
+        className="w-full bg-gradient-to-r from-blue-500 to-purple-500 text-white px-6 py-3 rounded-xl font-semibold hover:shadow-lg transition-all"
+      >
+        {contactText}
+      </button>
+    </div>
+  </div>
+)
+
 const About = () => {
   const handleContactClick = () => {
     // Scroll to Book A Call section
@@ -116,15 +140,6 @@ const About = () => {
                 handle="yasirDev404"
                 status="Available for work"
                 contactText="Book a Call"
-                avatarUrl="/avatar.png"
-                miniAvatarUrl="/avatar.png"
-                iconUrl="https://assets.codepen.io/13471/holo-icons.svg"
-                grainUrl="https://assets.codepen.io/13471/noise.png"
-                showUserInfo={true}
-                enableTilt={true}
-                enableMobileTilt={true}
-                mobileTiltSensitivity={5}
-                behindGlowEnabled={true}
                 onContactClick={handleContactClick}
               />
             </div>
@@ -152,6 +167,10 @@ const About = () => {
                 <p>
                   I'm a <span className="text-blue-400">creative problem-solver</span> who enjoys tackling complex challenges head-on. I've built systems like a multi-vendor spray-paint marketplace with live lead-purchase and{' '}
                   <span className="text-purple-400">Stripe integration</span> — coordinating multiple moving parts and designing from scratch.
+                </p>
+                <p>
+                  <span className="text-cyan-400 font-semibold">My biggest accomplishment?</span> Building the{' '}
+                  <span className="text-white font-semibold">Deepsurf cryptocurrency analytics platform</span> — a production Node.js/Express backend delivering real-time crypto market data, AI-powered analysis tools, and subscription-based client management. I integrated multiple APIs (CoinMarketCap, CoinGecko), implemented JWT authentication, connected Stripe & NowPayments for payments, optimized with caching strategies, and powered it all with AI analytics. It's live and serving real users today.
                 </p>
                 <p>
                   As a <span className="text-orange-400">fearless builder</span>, I pitch software ideas to business owners directly, handle client requirements, and deploy solutions live — all before finishing high school. I focus on shipping production-ready systems fast, constantly improving my skills along the way.
