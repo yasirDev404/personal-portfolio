@@ -142,16 +142,28 @@ const About = () => {
             <div className="relative pl-6 border-l-2 border-gradient-to-b from-blue-400 to-purple-500">
               <div className="space-y-4 text-gray-300 leading-relaxed">
                 <p>
-                  Hey! I'm <span className="text-white font-semibold">Yasir</span>, a{' '}
+                  Hi, I'm <span className="text-white font-semibold">Yasir</span>, a{' '}
                   <span className="bg-gradient-to-r from-blue-400 to-purple-500 bg-clip-text text-transparent font-semibold">15-year-old backend engineer</span> from{' '}
-                  <span className="text-white">Islamabad, Pakistan 🇵🇰</span>. I started coding at 12.
+                  <span className="text-white">Islamabad, Pakistan 🇵🇰</span>. I started coding at 12, and since then I've been building real-world systems that people actually use.
                 </p>
                 <p>
-                  I build <span className="text-green-400">robust backend systems</span> with Node.js, Express, MongoDB, and PostgreSQL. Payment systems with{' '}
-                  <span className="text-purple-400">Stripe</span>, authentication with <span className="text-blue-400">JWT</span>.
+                  I specialize in <span className="text-green-400">Node.js, Express, MongoDB, and PostgreSQL</span>, creating secure, scalable, and production-ready backend systems. I've built multi-vendor marketplaces, payment platforms, authentication services, and automated business tools — all used by actual clients.
                 </p>
                 <p>
-                  I'm also an <span className="text-orange-400">intermediate React Native developer</span> building cross-platform mobile apps with Redux and smooth UIs.
+                  I'm a <span className="text-blue-400">creative problem-solver</span> who enjoys tackling complex challenges head-on. I've built systems like a multi-vendor spray-paint marketplace with live lead-purchase and{' '}
+                  <span className="text-purple-400">Stripe integration</span> — coordinating multiple moving parts and designing from scratch.
+                </p>
+                <p>
+                  As a <span className="text-orange-400">fearless builder</span>, I pitch software ideas to business owners directly, handle client requirements, and deploy solutions live — all before finishing high school. I focus on shipping production-ready systems fast, constantly improving my skills along the way.
+                </p>
+                <p>
+                  I'm <span className="text-yellow-400">curious and hungry to learn</span>, diving deep into system internals, database optimizations, payment flows, and authentication logic. I approach development like a young founder, thinking about scalability, automation, and real business impact.
+                </p>
+                <p>
+                  Alongside backend work, I'm also an <span className="text-pink-400">intermediate React Native developer</span>, building cross-platform apps with Redux, clean architecture, and smooth UI experiences.
+                </p>
+                <p className="text-white font-medium pt-2">
+                  I'm Yasir — a builder, problem-solver, and lifelong learner, creating systems that work in the real world, one line of code at a time. 🚀
                 </p>
               </div>
             </div>
