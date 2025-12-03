@@ -67,7 +67,7 @@ const projects = [
 
 const Projects = () => {
   return (
-    <section id="projects" className="py-20 md:py-32 bg-dark-800/30">
+    <section id="projects" className="py-20 md:py-32 relative">
       <Container>
         <SectionTitle 
           title="My Projects" 

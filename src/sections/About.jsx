@@ -94,7 +94,7 @@ const About = () => {
   }
 
   return (
-    <section id="about" className="py-20 md:py-32 relative bg-gray-950">
+    <section id="about" className="py-20 md:py-32 relative">
       <Container>
         <SectionTitle 
           title="About Me" 
@@ -102,33 +102,112 @@ const About = () => {
         />
 
         <div className="grid lg:grid-cols-2 gap-12 items-start mb-16">
-          <motion.div
-            initial={{ opacity: 0, x: -30 }}
-            whileInView={{ opacity: 1, x: 0 }}
-            viewport={{ once: true, margin: "-100px" }}
-            transition={{ duration: 0.5 }}
-            className="flex justify-center lg:justify-end"
-          >
-            <div className="w-full max-w-md">
-              <ProfileCard
-                name="Yasir"
-                title="Backend Engineer"
-                handle="yasirDev404"
-                status="Available for work"
-                contactText="Book a Call"
-                avatarUrl="/avatar.png"
-                miniAvatarUrl="/avatar.png"
-                iconUrl="https://assets.codepen.io/13471/holo-icons.svg"
-                grainUrl="https://assets.codepen.io/13471/noise.png"
-                showUserInfo={true}
-                enableTilt={true}
-                enableMobileTilt={true}
-                mobileTiltSensitivity={5}
-                behindGlowEnabled={true}
-                onContactClick={handleContactClick}
-              />
-            </div>
-          </motion.div>
+          {/* Left Column - Profile Card + Journey */}
+          <div className="space-y-8">
+            <motion.div
+              initial={{ opacity: 0, x: -30 }}
+              whileInView={{ opacity: 1, x: 0 }}
+              viewport={{ once: true, margin: "-100px" }}
+              transition={{ duration: 0.5 }}
+              className="flex justify-center lg:justify-end"
+            >
+              <div className="w-full max-w-md">
+                <ProfileCard
+                  name="Yasir"
+                  title="Backend Engineer"
+                  handle="yasirDev404"
+                  status="Available for work"
+                  contactText="Book a Call"
+                  avatarUrl="/avatar.png"
+                  miniAvatarUrl="/avatar.png"
+                  iconUrl="https://assets.codepen.io/13471/holo-icons.svg"
+                  grainUrl="https://assets.codepen.io/13471/noise.png"
+                  showUserInfo={true}
+                  enableTilt={true}
+                  enableMobileTilt={true}
+                  mobileTiltSensitivity={5}
+                  behindGlowEnabled={true}
+                  onContactClick={handleContactClick}
+                />
+              </div>
+            </motion.div>
+
+            {/* My Journey Timeline */}
+            <motion.div
+              initial={{ opacity: 0, x: -30 }}
+              whileInView={{ opacity: 1, x: 0 }}
+              viewport={{ once: true, margin: "-100px" }}
+              transition={{ duration: 0.5, delay: 0.2 }}
+              className="w-full max-w-md mx-auto lg:ml-auto"
+            >
+              <h3 className="text-2xl font-bold text-white mb-6 flex items-center gap-2">
+                <span className="bg-gradient-to-r from-blue-400 to-purple-500 bg-clip-text text-transparent">My Journey</span>
+                <span className="text-2xl">🚀</span>
+              </h3>
+              
+              <div className="space-y-6">
+                {/* 6th Grade */}
+                <div className="relative pl-8 border-l-2 border-blue-500/30">
+                  <div className="absolute -left-2 top-0 w-4 h-4 rounded-full bg-blue-500 ring-4 ring-gray-900"></div>
+                  <div className="pb-4">
+                    <span className="text-blue-400 font-semibold text-sm">6th Grade</span>
+                    <h4 className="text-white font-semibold mt-1 mb-2">The Beginning 💻</h4>
+                    <p className="text-gray-400 text-sm leading-relaxed">
+                      Started with a Udemy HTML course. No laptop, no mentor, just pure determination. Didn't understand much, but kept going.
+                    </p>
+                  </div>
+                </div>
+
+                {/* 7th-8th Grade */}
+                <div className="relative pl-8 border-l-2 border-purple-500/30">
+                  <div className="absolute -left-2 top-0 w-4 h-4 rounded-full bg-purple-500 ring-4 ring-gray-900"></div>
+                  <div className="pb-4">
+                    <span className="text-purple-400 font-semibold text-sm">7th-8th Grade</span>
+                    <h4 className="text-white font-semibold mt-1 mb-2">React Native Era 📱</h4>
+                    <p className="text-gray-400 text-sm leading-relaxed">
+                      Jumped into React Native. Used a friend's GitHub to save code. Built screens, components, apps. Got my first payment: <span className="text-green-400 font-semibold">10,000 PKR</span> — invested every rupee.
+                    </p>
+                  </div>
+                </div>
+
+                {/* 9th Grade */}
+                <div className="relative pl-8 border-l-2 border-green-500/30">
+                  <div className="absolute -left-2 top-0 w-4 h-4 rounded-full bg-green-500 ring-4 ring-gray-900"></div>
+                  <div className="pb-4">
+                    <span className="text-green-400 font-semibold text-sm">9th Grade</span>
+                    <h4 className="text-white font-semibold mt-1 mb-2">Backend Awakening ⚡</h4>
+                    <p className="text-gray-400 text-sm leading-relaxed">
+                      Everything clicked. Node.js, Express, JWT, Redis, Docker, PostgreSQL. Found my true calling in backend development.
+                    </p>
+                  </div>
+                </div>
+
+                {/* The Pitch */}
+                <div className="relative pl-8 border-l-2 border-orange-500/30">
+                  <div className="absolute -left-2 top-0 w-4 h-4 rounded-full bg-orange-500 ring-4 ring-gray-900"></div>
+                  <div className="pb-4">
+                    <span className="text-orange-400 font-semibold text-sm">The Turning Point</span>
+                    <h4 className="text-white font-semibold mt-1 mb-2">First Pitch 💪</h4>
+                    <p className="text-gray-400 text-sm leading-relaxed">
+                      500 PKR in my pocket. Walked into a restaurant, pitched a website. Got ghosted. Felt invisible. But didn't quit.
+                    </p>
+                  </div>
+                </div>
+
+                {/* Today */}
+                <div className="relative pl-8">
+                  <div className="absolute -left-2 top-0 w-4 h-4 rounded-full bg-gradient-to-r from-blue-500 to-purple-500 ring-4 ring-gray-900 animate-pulse"></div>
+                  <div>
+                    <span className="bg-gradient-to-r from-blue-400 to-purple-500 bg-clip-text text-transparent font-semibold text-sm">Today • 10th Grade</span>
+                    <h4 className="text-white font-semibold mt-1 mb-2">Building Real Systems 🔥</h4>
+                    <p className="text-gray-400 text-sm leading-relaxed">
+                      8+ production backends. Crypto platforms. Multi-vendor marketplaces. Payment systems. All live, all real. Still just beginning.
+                    </p>
+                  </div>
+                </div>
+              </div>
+            </motion.div>
+          </div>
 
           {/* Right - Story + Tech Stack */}
           <motion.div

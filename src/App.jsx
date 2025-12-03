@@ -38,14 +38,15 @@ function App() {
         }}
       >
         <Particles
-          particleColors={['#6366f1', '#a855f7', '#ec4899', '#3b82f6']}
-          particleCount={200}
-          particleSpread={10}
-          speed={0.1}
-          particleBaseSize={100}
+          particleColors={['#ffffff', '#ffffff']}
+          particleCount={15000}
+          particleSpread={30}
+          speed={0.2}
+          particleBaseSize={120}
           moveParticlesOnHover={false}
-          alphaParticles={false}
+          alphaParticles={true}
           disableRotation={false}
+          pixelRatio={1}
         />
       </div>
 

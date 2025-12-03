@@ -39,7 +39,7 @@ const Contact = () => {
   }
 
   return (
-    <section id="contact" className="py-20 md:py-32 bg-dark-800/30">
+    <section id="contact" className="py-20 md:py-32 relative">
       <Container>
         <SectionTitle 
           title="Get In Touch" 
