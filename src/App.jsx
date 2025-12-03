@@ -2,6 +2,7 @@ import { useEffect } from 'react'
 import { Navbar, Footer } from './components/layout'
 import { Hero, About, Projects, Skills, Contact } from './sections'
 import Particles from './components/effects/Particles'
+import { Tube } from 'ogl'
 
 function App() {
   useEffect(() => {
@@ -41,7 +42,7 @@ function App() {
           particleColors={['#ffffff', '#ffffff']}
           particleCount={15000}
           particleSpread={30}
-          speed={0.2}
+          speed={0.3}
           particleBaseSize={120}
           moveParticlesOnHover={false}
           alphaParticles={true}
