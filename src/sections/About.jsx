@@ -115,8 +115,8 @@ const About = () => {
                 handle="yasirDev404"
                 status="Available for work"
                 contactText="Hire Me"
-                avatarUrl="../../../bananax.jpeg"
-                miniAvatarUrl="../../../bananax.jpeg"
+                avatarUrl="/avatar.png"
+                miniAvatarUrl="/avatar.png"
                 iconUrl="https://assets.codepen.io/13471/holo-icons.svg"
                 grainUrl="https://assets.codepen.io/13471/noise.png"
                 showUserInfo={true}
