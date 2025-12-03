@@ -86,10 +86,8 @@ const technologies = [
 
 const About = () => {
   const handleContactClick = () => {
-    const contactSection = document.getElementById('contact')
-    if (contactSection) {
-      contactSection.scrollIntoView({ behavior: 'smooth' })
-    }
+    // Open Calendly in new tab
+    window.open('https://calendly.com/yasirsaheto11/30min', '_blank')
   }
 
   return (
@@ -114,9 +112,9 @@ const About = () => {
                 title="Backend Engineer"
                 handle="yasirDev404"
                 status="Available for work"
-                contactText="Hire Me"
-                avatarUrl="/avatar.png"
-                miniAvatarUrl="/avatar.png"
+                contactText="Book a Call"
+                avatarUrl="/bananax.jpeg"
+                miniAvatarUrl="/bananax.jpeg"
                 iconUrl="https://assets.codepen.io/13471/holo-icons.svg"
                 grainUrl="https://assets.codepen.io/13471/noise.png"
                 showUserInfo={true}
