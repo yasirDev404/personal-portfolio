@@ -7,8 +7,8 @@ import {
 } from 'react-icons/hi'
 import { FaRocket } from 'react-icons/fa'
 import { SiMongodb, SiPostgresql, SiStripe, SiDocker, SiAmazonaws, SiNodedotjs } from 'react-icons/si'
-import ProfileCard from '../components/ui/profileCard'
-import '../components/ui/profileCard.css'
+import ProfileCard from '../components/profileCard'
+import '../components/profileCard.css'
 
 const Container = ({ children, className = '' }) => (
   <div className={`max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 ${className}`}>
