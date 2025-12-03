@@ -4,7 +4,6 @@ import { Hero, About, Projects, Skills, Contact } from './sections'
 
 function App() {
   useEffect(() => {
-    // Smooth scroll behavior for anchor links
     const handleAnchorClick = (e) => {
       const target = e.target.closest('a[href^="#"]')
       if (target) {
