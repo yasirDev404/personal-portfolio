@@ -86,8 +86,11 @@ const technologies = [
 
 const About = () => {
   const handleContactClick = () => {
-    // Open Calendly in new tab
-    window.open('https://calendly.com/yasirsaheto11/30min', '_blank')
+    // Scroll to Book A Call section
+    const bookCallSection = document.getElementById('book-a-call')
+    if (bookCallSection) {
+      bookCallSection.scrollIntoView({ behavior: 'smooth', block: 'center' })
+    }
   }
 
   return (
