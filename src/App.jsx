@@ -1,8 +1,7 @@
 import { useEffect } from 'react'
 import { Navbar, Footer } from './components/layout'
-import { Hero, About, Projects, Skills, Contact } from './sections'
+import { Hero, About, Projects, Skills, Reviews, Contact } from './sections'
 import Particles from './components/effects/Particles'
-import { Tube } from 'ogl'
 
 function App() {
   useEffect(() => {
@@ -62,6 +61,7 @@ function App() {
           <About />
           <Projects />
           <Skills />
+          <Reviews />
           <Contact />
         </main>
 
