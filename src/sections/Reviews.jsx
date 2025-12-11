@@ -346,35 +346,53 @@ const Reviews = () => {
   const [editingReview, setEditingReview] = useState(null)
   const [isAdmin, setIsAdmin] = useState(false)
   const [isSubmitting, setIsSubmitting] = useState(false)
+  const [isLoading, setIsLoading] = useState(true)
   const [showPublicForm, setShowPublicForm] = useState(false)
   const [pendingPage, setPendingPage] = useState(1)
   const reviewsPerPage = 6
 
-  // Load reviews from localStorage on mount
+  // API base URL
+  const API_BASE = '/api/reviews'
+
+  // Fetch reviews from API
+  const fetchReviews = async (useAdminMode = false) => {
+    try {
+      setIsLoading(true)
+      const adminPassword = useAdminMode ? (process.env.REACT_APP_ADMIN_PASSWORD || 'mazharchutiya123') : null
+      const url = adminPassword 
+        ? `${API_BASE}?adminPassword=${encodeURIComponent(adminPassword)}`
+        : API_BASE
+      
+      const response = await fetch(url)
+      const data = await response.json()
+      
+      if (data.success) {
+        setApprovedReviews(data.approved || [])
+        setPendingReviews(data.pending || [])
+      }
+    } catch (error) {
+      console.error('Error fetching reviews:', error)
+      // Fallback to empty arrays on error
+      setApprovedReviews([])
+      setPendingReviews([])
+    } finally {
+      setIsLoading(false)
+    }
+  }
+
+  // Load reviews from API on mount
   useEffect(() => {
-    const savedApproved = localStorage.getItem('portfolio-reviews-approved')
-    const savedPending = localStorage.getItem('portfolio-reviews-pending')
-    
-    if (savedApproved) {
-      setApprovedReviews(JSON.parse(savedApproved))
-    }
-    if (savedPending) {
-      setPendingReviews(JSON.parse(savedPending))
-    }
-    
     // Check if admin mode is enabled
-    const adminMode = localStorage.getItem('portfolio-admin-mode')
-    setIsAdmin(adminMode === 'true')
+    const adminMode = localStorage.getItem('portfolio-admin-mode') === 'true'
+    setIsAdmin(adminMode)
+    
+    fetchReviews(adminMode)
   }, [])
 
-  // Save reviews to localStorage whenever they change
+  // Refetch reviews when admin mode changes
   useEffect(() => {
-    localStorage.setItem('portfolio-reviews-approved', JSON.stringify(approvedReviews))
-  }, [approvedReviews])
-
-  useEffect(() => {
-    localStorage.setItem('portfolio-reviews-pending', JSON.stringify(pendingReviews))
-  }, [pendingReviews])
+    fetchReviews(isAdmin)
+  }, [isAdmin])
 
   // Keyboard shortcut for admin mode (Ctrl+Shift+A)
   useEffect(() => {
@@ -398,96 +416,30 @@ const Reviews = () => {
     return () => window.removeEventListener('keydown', handleKeyPress)
   }, [isAdmin])
 
-  // Send email notification when review is submitted
-  const sendReviewNotification = async (reviewData) => {
-    try {
-      const emailMessage = `New Review Submission
-
-Name: ${reviewData.name}
-Email: ${reviewData.email}
-Role: ${reviewData.role || 'Not provided'}
-Rating: ${reviewData.rating}/5
-
-Review:
-${reviewData.review}
-
----
-To approve this review, log in to admin mode (Ctrl+Shift+A) and click approve.
-To reject, click reject.`
-
-      // Use Formsubmit with proper format
-      const response = await fetch("https://formsubmit.co/dexadoors@gmail.com", {
-        method: "POST",
-        headers: {
-          'Content-Type': 'application/json',
-          'Accept': 'application/json'
-        },
-        body: JSON.stringify({
-          name: reviewData.name,
-          email: reviewData.email,
-          _subject: `New Review Submission from ${reviewData.name}`,
-          _template: 'box',
-          message: emailMessage,
-          _captcha: 'false',
-          _autoresponse: `Thank you for submitting a review! Your review is pending approval and will be published soon.`
-        })
-      })
-
-      if (response.ok) {
-        console.log('Email sent successfully to dexadoors@gmail.com')
-        return true
-      } else {
-        console.error('Email response not OK:', response.status, response.statusText)
-        // Try with FormData as fallback
-        const formData = new FormData()
-        formData.append('name', reviewData.name)
-        formData.append('email', reviewData.email)
-        formData.append('_subject', `New Review Submission from ${reviewData.name}`)
-        formData.append('message', emailMessage)
-        formData.append('_captcha', 'false')
-
-        const fallbackResponse = await fetch("https://formsubmit.co/dexadoors@gmail.com", {
-          method: "POST",
-          body: formData
-        })
-
-        if (fallbackResponse.ok) {
-          console.log('Email sent via FormData method')
-          return true
-        }
-        return false
-      }
-    } catch (error) {
-      console.error('Failed to send email notification:', error)
-      return false
-    }
-  }
-
   // Public user submits review
   const handlePublicSubmit = async (formData) => {
     setIsSubmitting(true)
     try {
-      const newReview = {
-        id: Date.now(),
-        ...formData,
-        avatar: formData.avatar || `https://api.dicebear.com/7.x/avataaars/svg?seed=${formData.name}`,
-        status: 'pending',
-        submittedAt: new Date().toISOString()
-      }
+      const response = await fetch(`${API_BASE}/submit`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(formData),
+      })
 
-      // Add to pending reviews first
-      setPendingReviews([...pendingReviews, newReview])
+      const data = await response.json()
 
-      // Send email notification
-      const emailSent = await sendReviewNotification(formData)
-      
-      if (emailSent) {
+      if (response.ok && data.success) {
         alert('Thank you! Your review has been submitted and is pending approval. You should receive a confirmation email shortly.')
+        setShowPublicForm(false)
+        // Refresh reviews to show the new pending review (if admin)
+        if (isAdmin) {
+          await fetchReviews()
+        }
       } else {
-        alert('Thank you! Your review has been submitted and is pending approval. (Note: Email notification may have failed, but your review was saved.)')
+        alert(data.error || 'There was an error submitting your review. Please try again.')
       }
-      
-      setShowPublicForm(false)
     } catch (error) {
       console.error('Error submitting review:', error)
       alert('There was an error submitting your review. Please try again.')
@@ -507,75 +459,189 @@ To reject, click reject.`
     setShowForm(true)
   }
 
-  const handleSave = (formData) => {
+  const handleSave = async (formData) => {
     if (editingReview) {
-      // Update existing review
-      if (editingReview.status === 'pending') {
-        setPendingReviews(pendingReviews.map(r => 
-          r.id === editingReview.id 
-            ? { ...editingReview, ...formData }
-            : r
-        ))
-      } else {
-        setApprovedReviews(approvedReviews.map(r => 
-          r.id === editingReview.id 
-            ? { ...editingReview, ...formData }
-            : r
-        ))
-      }
+      // For now, editing is not implemented in API - you can add it later
+      alert('Edit functionality will be added soon. For now, please delete and recreate the review.')
+      setShowForm(false)
+      setEditingReview(null)
+      return
     } else {
-      // Add new review directly (admin only)
-      const newReview = {
-        id: Date.now(),
-        ...formData,
-        avatar: formData.avatar || `https://api.dicebear.com/7.x/avataaars/svg?seed=${formData.name}`,
-        status: 'approved'
+      // Add new review directly (admin only) - submit as approved
+      try {
+        const response = await fetch(`${API_BASE}/submit`, {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify(formData),
+        })
+
+        const data = await response.json()
+
+        if (response.ok && data.success) {
+          // Immediately approve it
+          await handleApprove({ id: data.reviewId })
+        } else {
+          alert(data.error || 'Error adding review')
+        }
+      } catch (error) {
+        console.error('Error adding review:', error)
+        alert('Error adding review')
       }
-      setApprovedReviews([...approvedReviews, newReview])
     }
     setShowForm(false)
     setEditingReview(null)
   }
 
-  const handleDelete = (id) => {
-    if (window.confirm('Are you sure you want to delete this review?')) {
-      setApprovedReviews(approvedReviews.filter(r => r.id !== id))
+  const handleDelete = async (id) => {
+    if (!window.confirm('Are you sure you want to delete this review?')) {
+      return
     }
-  }
 
-  const handleApprove = (review) => {
-    // Remove from pending, add to approved
-    setPendingReviews(pendingReviews.filter(r => r.id !== review.id))
-    const approvedReview = { ...review, status: 'approved' }
-    delete approvedReview.submittedAt
-    setApprovedReviews([...approvedReviews, approvedReview])
-    alert('Review approved and published!')
-  }
-
-  const handleReject = (id) => {
-    if (window.confirm('Are you sure you want to reject this review?')) {
-      setPendingReviews(pendingReviews.filter(r => r.id !== id))
-      alert('Review rejected and removed.')
-    }
-  }
-
-  const handleBulkApprove = () => {
-    if (window.confirm(`Are you sure you want to approve all ${pendingReviews.length} pending reviews?`)) {
-      const approved = pendingReviews.map(r => {
-        const approvedReview = { ...r, status: 'approved' }
-        delete approvedReview.submittedAt
-        return approvedReview
+    try {
+      const adminPassword = process.env.REACT_APP_ADMIN_PASSWORD || 'mazharchutiya123'
+      const response = await fetch(`${API_BASE}`, {
+        method: 'DELETE',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          reviewId: id,
+          adminPassword,
+        }),
       })
-      setApprovedReviews([...approvedReviews, ...approved])
-      setPendingReviews([])
-      alert(`All ${approved.length} reviews have been approved!`)
+
+      const data = await response.json()
+
+      if (response.ok && data.success) {
+        alert('Review deleted successfully!')
+        await fetchReviews()
+      } else {
+        alert(data.error || 'Error deleting review')
+      }
+    } catch (error) {
+      console.error('Error deleting review:', error)
+      alert('Error deleting review')
     }
   }
 
-  const handleBulkReject = () => {
-    if (window.confirm(`Are you sure you want to reject all ${pendingReviews.length} pending reviews?`)) {
-      setPendingReviews([])
-      alert(`All reviews have been rejected.`)
+  const handleApprove = async (review) => {
+    try {
+      const adminPassword = process.env.REACT_APP_ADMIN_PASSWORD || 'mazharchutiya123'
+      const response = await fetch(`${API_BASE}/approve`, {
+        method: 'PUT',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          reviewId: review.id,
+          adminPassword,
+        }),
+      })
+
+      const data = await response.json()
+
+      if (response.ok && data.success) {
+        alert('Review approved and published!')
+        await fetchReviews()
+      } else {
+        alert(data.error || 'Error approving review')
+      }
+    } catch (error) {
+      console.error('Error approving review:', error)
+      alert('Error approving review')
+    }
+  }
+
+  const handleReject = async (id) => {
+    if (!window.confirm('Are you sure you want to reject this review?')) {
+      return
+    }
+
+    // Reject is same as delete
+    await handleDelete(id)
+  }
+
+  const handleBulkApprove = async () => {
+    if (!window.confirm(`Are you sure you want to approve all ${pendingReviews.length} pending reviews?`)) {
+      return
+    }
+
+    try {
+      const adminPassword = process.env.REACT_APP_ADMIN_PASSWORD || 'mazharchutiya123'
+      let successCount = 0
+      let failCount = 0
+
+      for (const review of pendingReviews) {
+        try {
+          const response = await fetch(`${API_BASE}/approve`, {
+            method: 'PUT',
+            headers: {
+              'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({
+              reviewId: review.id,
+              adminPassword,
+            }),
+          })
+
+          if (response.ok) {
+            successCount++
+          } else {
+            failCount++
+          }
+        } catch (error) {
+          failCount++
+        }
+      }
+
+      alert(`Approved ${successCount} reviews${failCount > 0 ? `, ${failCount} failed` : ''}`)
+      await fetchReviews()
+    } catch (error) {
+      console.error('Error bulk approving:', error)
+      alert('Error approving reviews')
+    }
+  }
+
+  const handleBulkReject = async () => {
+    if (!window.confirm(`Are you sure you want to reject all ${pendingReviews.length} pending reviews?`)) {
+      return
+    }
+
+    try {
+      const adminPassword = process.env.REACT_APP_ADMIN_PASSWORD || 'mazharchutiya123'
+      let successCount = 0
+      let failCount = 0
+
+      for (const review of pendingReviews) {
+        try {
+          const response = await fetch(`${API_BASE}`, {
+            method: 'DELETE',
+            headers: {
+              'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({
+              reviewId: review.id,
+              adminPassword,
+            }),
+          })
+
+          if (response.ok) {
+            successCount++
+          } else {
+            failCount++
+          }
+        } catch (error) {
+          failCount++
+        }
+      }
+
+      alert(`Rejected ${successCount} reviews${failCount > 0 ? `, ${failCount} failed` : ''}`)
+      await fetchReviews()
+    } catch (error) {
+      console.error('Error bulk rejecting:', error)
+      alert('Error rejecting reviews')
     }
   }
 
@@ -747,20 +813,28 @@ To reject, click reject.`
               </div>
             )}
 
-            {/* Note about localStorage */}
+            {/* Note about database */}
             <div className="mt-6 p-4 bg-blue-500/10 border border-blue-500/30 rounded-xl">
               <p className="text-blue-400 text-sm">
                 <FaExclamationCircle className="inline mr-2" />
-                <strong>Note:</strong> Reviews are stored in your browser's local storage. 
-                Reviews submitted from different browsers/devices won't be visible here. 
-                Check your email ({'dexadoors@gmail.com'}) for all review submissions.
+                <strong>Note:</strong> Reviews are now stored in a database and visible across all devices. 
+                All review submissions are also sent to your email ({'dexadoors@gmail.com'}) for backup.
               </p>
             </div>
           </div>
         )}
 
-        {/* Approved Reviews */}
-        {approvedReviews.length === 0 ? (
+        {/* Loading State */}
+        {isLoading ? (
+          <Card className="p-12 text-center">
+            <div className="max-w-md mx-auto">
+              <div className="w-20 h-20 rounded-full bg-dark-700 flex items-center justify-center mx-auto mb-4 animate-pulse">
+                <FaQuoteLeft className="text-4xl text-gray-600" />
+              </div>
+              <h3 className="text-xl font-semibold text-white mb-2">Loading reviews...</h3>
+            </div>
+          </Card>
+        ) : approvedReviews.length === 0 ? (
           <Card className="p-12 text-center">
             <div className="max-w-md mx-auto">
               <div className="w-20 h-20 rounded-full bg-dark-700 flex items-center justify-center mx-auto mb-4">
