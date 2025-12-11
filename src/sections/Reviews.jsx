@@ -428,14 +428,22 @@ const Reviews = () => {
         body: JSON.stringify(formData),
       })
 
+      // Clone response to read it safely
+      const responseClone = response.clone()
       let data
+      
       try {
         data = await response.json()
       } catch (jsonError) {
-        console.error('Error parsing JSON response:', jsonError)
-        const text = await response.text()
-        console.error('Response text:', text)
-        alert(`Server error: ${response.status} ${response.statusText}. Please check the console for details.`)
+        // If JSON parsing fails, try to read as text from the clone
+        try {
+          const text = await responseClone.text()
+          console.error('Response text (not JSON):', text)
+          alert(`Server error: ${response.status} ${response.statusText}. Response: ${text.substring(0, 100)}`)
+        } catch (textError) {
+          console.error('Error reading response:', textError)
+          alert(`Server error: ${response.status} ${response.statusText}. Please check the console for details.`)
+        }
         return
       }
 
@@ -447,7 +455,7 @@ const Reviews = () => {
           await fetchReviews()
         }
       } else {
-        alert(data.error || 'There was an error submitting your review. Please try again.')
+        alert(data.error || data.message || 'There was an error submitting your review. Please try again.')
       }
     } catch (error) {
       console.error('Error submitting review:', error)
