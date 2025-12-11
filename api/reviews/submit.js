@@ -107,11 +107,13 @@ To approve this review, use the API endpoint: PUT /api/reviews/approve with revi
     return res.status(201).json({
       success: true,
       message: 'Review submitted successfully and is pending approval',
-      reviewId: result.insertedId,
+      reviewId: result.insertedId.toString(),
     });
   } catch (error) {
     console.error('Error submitting review:', error);
-    return res.status(500).json({ error: 'Internal server error' });
+    return res.status(500).json({ 
+      error: 'Internal server error',
+      message: error.message || 'An unexpected error occurred',
+    });
   }
 }
-

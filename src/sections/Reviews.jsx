@@ -428,7 +428,16 @@ const Reviews = () => {
         body: JSON.stringify(formData),
       })
 
-      const data = await response.json()
+      let data
+      try {
+        data = await response.json()
+      } catch (jsonError) {
+        console.error('Error parsing JSON response:', jsonError)
+        const text = await response.text()
+        console.error('Response text:', text)
+        alert(`Server error: ${response.status} ${response.statusText}. Please check the console for details.`)
+        return
+      }
 
       if (response.ok && data.success) {
         alert('Thank you! Your review has been submitted and is pending approval. You should receive a confirmation email shortly.')
@@ -442,7 +451,7 @@ const Reviews = () => {
       }
     } catch (error) {
       console.error('Error submitting review:', error)
-      alert('There was an error submitting your review. Please try again.')
+      alert(`Network error: ${error.message}. Please check your connection and try again.`)
     } finally {
       setIsSubmitting(false)
     }
