@@ -339,6 +339,97 @@ const AdminReviewForm = ({ review, onSave, onCancel }) => {
   )
 }
 
+const ReviewFeedbackModal = ({ isOpen, type, title, message, onClose }) => {
+  const isSuccess = type === 'success'
+  const titleId = 'review-feedback-modal-title'
+
+  useEffect(() => {
+    if (!isOpen) return
+
+    document.body.style.overflow = 'hidden'
+
+    const handleEscape = (e) => {
+      if (e.key === 'Escape') onClose()
+    }
+    window.addEventListener('keydown', handleEscape)
+
+    return () => {
+      document.body.style.overflow = ''
+      window.removeEventListener('keydown', handleEscape)
+    }
+  }, [isOpen, onClose])
+
+  return (
+    <AnimatePresence>
+      {isOpen && (
+        <div className="fixed inset-0 z-[100] flex items-center justify-center p-4">
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            transition={{ duration: 0.2 }}
+            className="absolute inset-0 bg-black/60 backdrop-blur-sm"
+            onClick={onClose}
+            aria-hidden="true"
+          />
+
+          <motion.div
+            role="dialog"
+            aria-modal="true"
+            aria-labelledby={titleId}
+            initial={{ opacity: 0, scale: 0.95, y: 10 }}
+            animate={{ opacity: 1, scale: 1, y: 0 }}
+            exit={{ opacity: 0, scale: 0.95, y: 10 }}
+            transition={{ type: 'spring', stiffness: 400, damping: 30 }}
+            className="relative w-full max-w-md"
+            onClick={(e) => e.stopPropagation()}
+          >
+            <Card hover={false} className="p-6 md:p-8">
+              <motion.button
+                type="button"
+                onClick={onClose}
+                aria-label="Close"
+                whileHover={{ scale: 1.1 }}
+                whileTap={{ scale: 0.95 }}
+                className="absolute top-4 right-4 w-9 h-9 rounded-lg bg-dark-700 border border-dark-600 flex items-center justify-center text-gray-400 hover:bg-red-500/20 hover:text-red-400 hover:border-red-500/30 transition-colors duration-200"
+              >
+                <FaTimes size={16} />
+              </motion.button>
+
+              <div className="text-center pt-2">
+                <div
+                  className={`w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-5 ${
+                    isSuccess
+                      ? 'bg-green-500/20 border border-green-500/30'
+                      : 'bg-red-500/20 border border-red-500/30'
+                  }`}
+                >
+                  {isSuccess ? (
+                    <FaCheck className="text-2xl text-green-400" />
+                  ) : (
+                    <FaExclamationCircle className="text-2xl text-red-400" />
+                  )}
+                </div>
+
+                <h3 id={titleId} className="text-xl font-bold text-white mb-3">
+                  {title}
+                </h3>
+                <p className="text-gray-400 text-sm leading-relaxed mb-6 px-2">
+                  {message}
+                </p>
+
+                <Button onClick={onClose} className="w-full min-w-[140px]">
+                  Continue
+                </Button>
+              </div>
+            </Card>
+          </motion.div>
+        </div>
+      )}
+    </AnimatePresence>
+  )
+}
+
 const Reviews = () => {
   const [approvedReviews, setApprovedReviews] = useState([])
   const [pendingReviews, setPendingReviews] = useState([])
@@ -349,7 +440,21 @@ const Reviews = () => {
   const [isLoading, setIsLoading] = useState(true)
   const [showPublicForm, setShowPublicForm] = useState(false)
   const [pendingPage, setPendingPage] = useState(1)
+  const [feedbackModal, setFeedbackModal] = useState({
+    isOpen: false,
+    type: 'success',
+    title: '',
+    message: '',
+  })
   const reviewsPerPage = 6
+
+  const showFeedback = (type, title, message) => {
+    setFeedbackModal({ isOpen: true, type, title, message })
+  }
+
+  const closeFeedback = () => {
+    setFeedbackModal((prev) => ({ ...prev, isOpen: false }))
+  }
 
   // API base URL
   const API_BASE = '/api/reviews'
@@ -439,27 +544,47 @@ const Reviews = () => {
         try {
           const text = await responseClone.text()
           console.error('Response text (not JSON):', text)
-          alert(`Server error: ${response.status} ${response.statusText}. Response: ${text.substring(0, 100)}`)
+          showFeedback(
+            'error',
+            'Something went wrong',
+            `Server error: ${response.status} ${response.statusText}. Response: ${text.substring(0, 100)}`
+          )
         } catch (textError) {
           console.error('Error reading response:', textError)
-          alert(`Server error: ${response.status} ${response.statusText}. Please check the console for details.`)
+          showFeedback(
+            'error',
+            'Something went wrong',
+            `Server error: ${response.status} ${response.statusText}. Please check the console for details.`
+          )
         }
         return
       }
 
       if (response.ok && data.success) {
-        alert('Thank you! Your review has been submitted and is pending approval. You should receive a confirmation email shortly.')
+        showFeedback(
+          'success',
+          'Thank you!',
+          'Your review has been submitted and is pending approval. You should receive a confirmation email shortly.'
+        )
         setShowPublicForm(false)
         // Refresh reviews to show the new pending review (if admin)
         if (isAdmin) {
           await fetchReviews()
         }
       } else {
-        alert(data.error || data.message || 'There was an error submitting your review. Please try again.')
+        showFeedback(
+          'error',
+          'Something went wrong',
+          data.error || data.message || 'There was an error submitting your review. Please try again.'
+        )
       }
     } catch (error) {
       console.error('Error submitting review:', error)
-      alert(`Network error: ${error.message}. Please check your connection and try again.`)
+      showFeedback(
+        'error',
+        'Something went wrong',
+        `Network error: ${error.message}. Please check your connection and try again.`
+      )
     } finally {
       setIsSubmitting(false)
     }
@@ -885,6 +1010,14 @@ const Reviews = () => {
           </>
         )}
       </Container>
+
+      <ReviewFeedbackModal
+        isOpen={feedbackModal.isOpen}
+        type={feedbackModal.type}
+        title={feedbackModal.title}
+        message={feedbackModal.message}
+        onClose={closeFeedback}
+      />
     </section>
   )
 }
