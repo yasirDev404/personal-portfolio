@@ -1,12 +1,11 @@
 import { useState } from 'react'
 import { motion } from 'framer-motion'
-import { FaGithub, FaLinkedin, FaEnvelope, FaPaperPlane, FaCalendarAlt, FaVideo } from 'react-icons/fa'
+import { FaGithub, FaEnvelope, FaPaperPlane, FaCalendarAlt, FaVideo } from 'react-icons/fa'
 import { HiLocationMarker, HiClock } from 'react-icons/hi'
 import { Container, SectionTitle, Card, Button } from '../components/ui'
 
 const socialLinks = [
   { name: 'GitHub', icon: FaGithub, href: 'https://github.com/yasirDev404', description: '@yasirDev404' },
-  { name: 'LinkedIn', icon: FaLinkedin, href: 'https://www.linkedin.com/in/yasir-sahto-507008364/', description: 'Yasir' },
   { name: 'Email', icon: FaEnvelope, href: 'mailto:yasirsahto193@gmail.com', description: 'yasirsahto193@gmail.com' },
 ]
 

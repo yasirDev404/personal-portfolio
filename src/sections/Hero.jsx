@@ -1,5 +1,5 @@
 import { motion } from 'framer-motion'
-import { FaArrowRight, FaRocket, FaGithub, FaLinkedin } from 'react-icons/fa'
+import { FaArrowRight, FaRocket, FaGithub } from 'react-icons/fa'
 import { Container, Button } from '../components/ui'
 
 const Hero = () => {
@@ -57,7 +57,7 @@ const Hero = () => {
             transition={{ duration: 0.5, delay: 0.3 }}
             className="text-lg md:text-xl text-gray-400 max-w-3xl mx-auto mb-8 leading-relaxed"
           >
-            <span className="text-accent-glow font-semibold">15 y/o</span> backend engineer • 
+            <span className="text-accent-glow font-semibold">Full-stack developer</span> • 
             shipping production systems fast. 
             <span className="text-neon-green"> Node.js</span> • 
             <span className="text-neon-blue"> Express</span> • 
@@ -119,7 +119,6 @@ const Hero = () => {
           >
             {[
               { Icon: FaGithub, href: 'https://github.com/yasirDev404', label: 'GitHub' },
-              { Icon: FaLinkedin, href: 'https://www.linkedin.com/in/yasir-sahto-507008364/', label: 'LinkedIn' },
             ].map(({ Icon, href, label }) => (
               <a
                 key={label}

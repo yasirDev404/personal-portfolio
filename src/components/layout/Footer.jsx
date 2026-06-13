@@ -1,9 +1,8 @@
-import { FaGithub, FaLinkedin, FaEnvelope, FaHeart } from 'react-icons/fa'
+import { FaGithub, FaEnvelope, FaHeart } from 'react-icons/fa'
 import { Container } from '../ui'
 
 const socialLinks = [
   { name: 'GitHub', icon: FaGithub, href: 'https://github.com/yasirDev404' },
-  { name: 'LinkedIn', icon: FaLinkedin, href: 'https://www.linkedin.com/in/yasir-sahto-507008364/' },
   { name: 'Email', icon: FaEnvelope, href: 'mailto:yasirsahto193@gmail.com' },
 ]
 

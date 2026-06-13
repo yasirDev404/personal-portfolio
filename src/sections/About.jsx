@@ -4,8 +4,9 @@ import {
   HiDeviceMobile, 
   HiCloud,
   HiLightningBolt,
+  HiCode,
 } from 'react-icons/hi'
-import { FaRocket } from 'react-icons/fa'
+import { FaRocket, FaGlobe, FaUsers, FaSearch } from 'react-icons/fa'
 import { SiMongodb, SiPostgresql, SiStripe, SiDocker, SiAmazonaws, SiNodedotjs } from 'react-icons/si'
 import ProfileCard from '../components/ProfileCard'
 import '../components/ProfileCard.css'
@@ -50,28 +51,58 @@ const Card = ({ children, className = '' }) => (
 
 const highlights = [
   {
-    icon: HiLightningBolt,
-    title: '15 Years Old',
-    description: 'Started coding at 12, now shipping production apps at 15.',
-    color: 'text-orange-400',
-  },
-  {
     icon: HiServer,
     title: '8+ Production Backends',
-    description: 'Built backends for real businesses - marketplaces to restaurants.',
+    description: 'Built for real businesses across multiple industries',
     color: 'text-green-400',
+  },
+  {
+    icon: FaGlobe,
+    title: '4+ Live Platforms',
+    description: 'Shipped and serving real users worldwide',
+    color: 'text-cyan-400',
   },
   {
     icon: HiDeviceMobile,
     title: 'Mobile Development',
-    description: 'React Native developer building cross-platform apps.',
+    description: 'Cross-platform iOS & Android apps with React Native',
     color: 'text-purple-400',
+  },
+  {
+    icon: HiLightningBolt,
+    title: 'AI Integration',
+    description: 'ChatGPT, Claude API, and custom AI chatbot systems',
+    color: 'text-yellow-400',
+  },
+  {
+    icon: HiCode,
+    title: 'Full-Stack Capable',
+    description: 'Frontend to backend to mobile to cloud',
+    color: 'text-blue-400',
   },
   {
     icon: HiCloud,
     title: 'Cloud Deployments',
-    description: 'Experienced with Vercel, Heroku, and cPanel.',
-    color: 'text-blue-400',
+    description: 'Vercel, AWS, Heroku, cPanel',
+    color: 'text-indigo-400',
+  },
+  {
+    icon: FaUsers,
+    title: 'Team at Dexa Doors',
+    description: 'Always available, always shipping',
+    color: 'text-pink-400',
+  },
+  {
+    icon: SiStripe,
+    title: 'Payment Systems',
+    description: 'Stripe, PayPal, NowPayments integrated',
+    color: 'text-purple-400',
+  },
+  {
+    icon: FaSearch,
+    title: 'SEO & Performance',
+    description: 'Optimized for search and speed from day one',
+    color: 'text-orange-400',
   },
 ]
 
@@ -86,7 +117,6 @@ const technologies = [
 
 const About = () => {
   const handleContactClick = () => {
-    // Scroll to Book A Call section
     const bookCallSection = document.getElementById('book-a-call')
     if (bookCallSection) {
       bookCallSection.scrollIntoView({ behavior: 'smooth', block: 'center' })
@@ -98,7 +128,7 @@ const About = () => {
       <Container>
         <SectionTitle 
           title="About Me" 
-          subtitle="A young developer with big dreams and real-world experience"
+          subtitle="Full-stack builder shipping production systems for businesses worldwide"
         />
 
         <div className="grid lg:grid-cols-2 gap-12 items-start mb-16">
@@ -146,50 +176,38 @@ const About = () => {
               </h3>
               
               <div className="space-y-6">
-                {/* 6th Grade */}
+                {/* Early Days */}
                 <div className="relative pl-8 border-l-2 border-blue-500/30">
                   <div className="absolute -left-2 top-0 w-4 h-4 rounded-full bg-blue-500 ring-4 ring-gray-900"></div>
                   <div className="pb-4">
-                    <span className="text-blue-400 font-semibold text-sm">6th Grade</span>
+                    <span className="text-blue-400 font-semibold text-sm">Early Days</span>
                     <h4 className="text-white font-semibold mt-1 mb-2">The Beginning 💻</h4>
                     <p className="text-gray-400 text-sm leading-relaxed">
-                      Started with a Udemy HTML course. No laptop, no mentor, just pure determination. Didn't understand much, but kept going.
+                      Started coding out of pure curiosity with no mentor and no guidance — just determination to figure things out. Didn't stop until things started making sense.
                     </p>
                   </div>
                 </div>
 
-                {/* 7th-8th Grade */}
+                {/* Building for Mobile */}
                 <div className="relative pl-8 border-l-2 border-purple-500/30">
                   <div className="absolute -left-2 top-0 w-4 h-4 rounded-full bg-purple-500 ring-4 ring-gray-900"></div>
                   <div className="pb-4">
-                    <span className="text-purple-400 font-semibold text-sm">7th-8th Grade</span>
-                    <h4 className="text-white font-semibold mt-1 mb-2">React Native Era 📱</h4>
+                    <span className="text-purple-400 font-semibold text-sm">Building for Mobile</span>
+                    <h4 className="text-white font-semibold mt-1 mb-2">Mobile Era 📱</h4>
                     <p className="text-gray-400 text-sm leading-relaxed">
-                      Jumped into React Native. Used a friend's GitHub to save code. Built screens, components, apps. Got my first payment: <span className="text-green-400 font-semibold">10,000 PKR</span> — invested every rupee.
+                      Jumped deep into React Native. Built screens, components, and full cross-platform apps. Landed first paid project — invested every rupee back into learning.
                     </p>
                   </div>
                 </div>
 
-                {/* 9th Grade */}
+                {/* Backend Awakening */}
                 <div className="relative pl-8 border-l-2 border-green-500/30">
                   <div className="absolute -left-2 top-0 w-4 h-4 rounded-full bg-green-500 ring-4 ring-gray-900"></div>
                   <div className="pb-4">
-                    <span className="text-green-400 font-semibold text-sm">9th Grade</span>
+                    <span className="text-green-400 font-semibold text-sm">Backend Awakening</span>
                     <h4 className="text-white font-semibold mt-1 mb-2">Backend Awakening ⚡</h4>
                     <p className="text-gray-400 text-sm leading-relaxed">
-                      Everything clicked. Node.js, Express, JWT, Redis, Docker, PostgreSQL. Found my true calling in backend development.
-                    </p>
-                  </div>
-                </div>
-
-                {/* The Pitch */}
-                <div className="relative pl-8 border-l-2 border-orange-500/30">
-                  <div className="absolute -left-2 top-0 w-4 h-4 rounded-full bg-orange-500 ring-4 ring-gray-900"></div>
-                  <div className="pb-4">
-                    <span className="text-orange-400 font-semibold text-sm">The Turning Point</span>
-                    <h4 className="text-white font-semibold mt-1 mb-2">First Pitch 💪</h4>
-                    <p className="text-gray-400 text-sm leading-relaxed">
-                      500 PKR in my pocket. Walked into a restaurant, pitched a website. Got ghosted. Felt invisible. But didn't quit.
+                      Everything clicked. Node.js, Express, JWT, Redis, Docker, PostgreSQL. Found a true calling in backend architecture and system design.
                     </p>
                   </div>
                 </div>
@@ -198,10 +216,10 @@ const About = () => {
                 <div className="relative pl-8">
                   <div className="absolute -left-2 top-0 w-4 h-4 rounded-full bg-gradient-to-r from-blue-500 to-purple-500 ring-4 ring-gray-900 animate-pulse"></div>
                   <div>
-                    <span className="bg-gradient-to-r from-blue-400 to-purple-500 bg-clip-text text-transparent font-semibold text-sm">Today • 10th Grade</span>
+                    <span className="bg-gradient-to-r from-blue-400 to-purple-500 bg-clip-text text-transparent font-semibold text-sm">Today</span>
                     <h4 className="text-white font-semibold mt-1 mb-2">Building Real Systems 🔥</h4>
                     <p className="text-gray-400 text-sm leading-relaxed">
-                      8+ production backends. Crypto platforms. Multi-vendor marketplaces. Payment systems. All live, all real. Still just beginning.
+                      Production backends. Crypto platforms. Multi-vendor marketplaces. Mobile apps. UK food delivery. Dutch rental platforms. All live, all real. Leading Dexa Doors — a team shipping full-stack solutions for clients worldwide. Still just getting started.
                     </p>
                   </div>
                 </div>
@@ -221,32 +239,13 @@ const About = () => {
             <div className="relative pl-6 border-l-2 border-gradient-to-b from-blue-400 to-purple-500">
               <div className="space-y-4 text-gray-300 leading-relaxed">
                 <p>
-                  Hi, I'm <span className="text-white font-semibold">Yasir</span>, a{' '}
-                  <span className="bg-gradient-to-r from-blue-400 to-purple-500 bg-clip-text text-transparent font-semibold">15-year-old backend engineer</span> from{' '}
-                  <span className="text-white">Islamabad, Pakistan 🇵🇰</span>. I started coding at 12, and since then I've been building real-world systems that people actually use.
+                  I'm Yasir — a full-stack developer, backend engineer, and mobile app developer building real-world digital products that businesses actually use. I started coding out of pure curiosity, and since then I've been shipping production systems for clients across the UK, Netherlands, and beyond.
                 </p>
                 <p>
-                  I specialize in <span className="text-green-400">Node.js, Express, MongoDB, and PostgreSQL</span>, creating secure, scalable, and production-ready backend systems. I've built multi-vendor marketplaces, payment platforms, authentication services, and automated business tools — all used by actual clients.
+                  I specialize in Node.js, Express, MongoDB, and PostgreSQL — building secure, scalable backends, multi-role platforms, payment systems, and AI-powered tools. I approach every project like a founder: thinking about scalability, automation, and real business impact from day one.
                 </p>
                 <p>
-                  I'm a <span className="text-blue-400">creative problem-solver</span> who enjoys tackling complex challenges head-on. I've built systems like a multi-vendor spray-paint marketplace with live lead-purchase and{' '}
-                  <span className="text-purple-400">Stripe integration</span> — coordinating multiple moving parts and designing from scratch.
-                </p>
-                <p>
-                  <span className="text-cyan-400 font-semibold">My biggest accomplishment?</span> Building the{' '}
-                  <span className="text-white font-semibold">Deepsurf cryptocurrency analytics platform</span> — a production Node.js/Express backend delivering real-time crypto market data, AI-powered analysis tools, and subscription-based client management. I integrated multiple APIs (CoinMarketCap, CoinGecko), implemented JWT authentication, connected Stripe & NowPayments for payments, optimized with caching strategies, and powered it all with AI analytics. It's live and serving real users today.
-                </p>
-                <p>
-                  As a <span className="text-orange-400">fearless builder</span>, I pitch software ideas to business owners directly, handle client requirements, and deploy solutions live — all before finishing high school. I focus on shipping production-ready systems fast, constantly improving my skills along the way.
-                </p>
-                <p>
-                  I'm <span className="text-yellow-400">curious and hungry to learn</span>, diving deep into system internals, database optimizations, payment flows, and authentication logic. I approach development like a young founder, thinking about scalability, automation, and real business impact.
-                </p>
-                <p>
-                  Alongside backend work, I'm also an <span className="text-pink-400">intermediate React Native developer</span>, building cross-platform apps with Redux, clean architecture, and smooth UI experiences.
-                </p>
-                <p className="text-white font-medium pt-2">
-                  I'm Yasir — a builder, problem-solver, and lifelong learner, creating systems that work in the real world, one line of code at a time. 🚀
+                  I lead Dexa Doors — a development team always available to deliver across the full stack. From SEO and UI/UX design to mobile apps, API integrations, CRM systems, and cloud deployments — the projects below reflect everything we're capable of. Every single one of them.
                 </p>
               </div>
             </div>

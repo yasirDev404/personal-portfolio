@@ -4,64 +4,40 @@ import { Container, SectionTitle, Card, Button } from '../components/ui'
 
 const projects = [
   {
-    title: 'Crypto Trading Platform',
-    description: 'Hyper-complex real-time trading backend with admin/user separation, wallets, transactions, trade flows, and high-security authentication. Infrastructure built for global usage.',
-    tech: ['Node.js', 'Express', 'PostgreSQL', 'Redis', 'JWT', 'WebSockets'],
-    github: 'https://github.com/yasirsahto',
-    demo: '#',
+    title: 'Deepsurf — Crypto Analytics Platform',
+    description: 'A production-grade cryptocurrency analytics platform delivering real-time market data, AI-powered analysis tools, and subscription-based client management. Integrated CoinMarketCap & CoinGecko APIs, JWT authentication, Stripe & NowPayments, caching strategies, and AI analytics. Live and serving real users.',
+    tech: ['Node.js', 'Express', 'PostgreSQL', 'Redis', 'JWT', 'Stripe', 'AI Analytics'],
+    demo: 'https://www.deepsurf.io/',
     color: 'border-neon-green/30',
     status: 'Production',
     locations: ['Global'],
   },
   {
-    title: 'Multi-Vendor Spray Paint Marketplace',
-    description: 'Large-scale SaaS backend with multi-vendor quoting system, real-time lead distribution, Stripe vendor payments, location-based filtering, and admin dashboards.',
-    tech: ['Node.js', 'Express', 'MongoDB', 'Stripe', 'Redis', 'JWT'],
-    github: 'https://github.com/yasirsahto',
-    demo: '#',
+    title: 'LichtLettersXXL — Admin, Vendor & User Platform',
+    description: 'A large-scale multi-role web platform with separate admin, vendor, and user sides. Features an integrated AI chatbot, role-based dashboards, vendor management, and full order flow. Built for a Dutch lighting letters rental business.',
+    tech: ['Node.js', 'Express', 'MongoDB', 'AI Chatbot', 'JWT', 'REST API'],
+    demo: 'https://xxllichtletters.nl/',
     color: 'border-neon-orange/30',
     status: 'Production',
-    locations: ['Australia', 'UK'],
+    locations: ['Netherlands'],
   },
   {
-    title: 'AI Chatbot Backend (FarmBotJoke)',
-    description: 'Custom AI backend powering ChatGPT-style interface with Claude + ChatGPT integration, session handling, memory, streaming responses, and multiple model fallbacks.',
-    tech: ['Node.js', 'Express', 'Claude API', 'ChatGPT', 'WebSockets', 'MongoDB'],
-    github: 'https://github.com/yasirsahto',
-    demo: '#',
+    title: 'Hoppaverhuur — Rental Platform',
+    description: 'A complete rental management platform with admin and user sides. Handles bookings, inventory, user management, and admin controls — built for a Dutch rental business and deployed live.',
+    tech: ['Node.js', 'Express', 'MongoDB', 'REST API', 'JWT', 'Admin Dashboard'],
+    demo: 'https://www.hoppaverhuur.nl/',
     color: 'border-neon-blue/30',
     status: 'Production',
-    locations: ['Global'],
+    locations: ['Netherlands'],
   },
   {
-    title: 'UK Multi-Role Food Delivery Platform',
-    description: 'Full backend powering chefs, admins, users, and delivery riders with ordering, menus, payouts, and real-time tracking.',
-    tech: ['Node.js', 'Express', 'PostgreSQL', 'Stripe', 'Redis', 'WebSockets'],
-    github: 'https://github.com/yasirsahto',
-    demo: '#',
+    title: "Zanny's Food — UK Food Delivery App",
+    description: 'A full-scale food delivery ecosystem based in London, UK. Built native mobile applications for both Android and iOS with separate flows for admin, driver, vendor, and user. Handles menus, live order tracking, payouts, and real-time delivery management.',
+    tech: ['React Native', 'Node.js', 'Express', 'PostgreSQL', 'Stripe', 'WebSockets', 'Redux'],
+    demo: 'https://www.zannysfood.co.uk/',
     color: 'border-neon-purple/30',
     status: 'Production',
     locations: ['UK'],
-  },
-  {
-    title: 'Enterprise Inventory Management System',
-    description: 'Large-scale backend for global enterprise with multi-location inventory, role-based dashboards, procurement, stock levels, and massive scalability.',
-    tech: ['Node.js', 'Express', 'PostgreSQL', 'Redis', 'Docker', 'AWS'],
-    github: 'https://github.com/yasirsahto',
-    demo: '#',
-    color: 'border-neon-pink/30',
-    status: 'Production',
-    locations: ['Russia', 'Siberia', 'Ukraine'],
-  },
-  {
-    title: 'Subscription/Loan Processing Platform',
-    description: 'Fully functional loan subscription backend with EMI calculations, repayment cycles, user onboarding, admin approval flows, and transaction tracking.',
-    tech: ['Node.js', 'Express', 'PostgreSQL', 'Stripe', 'Cron Jobs'],
-    github: 'https://github.com/yasirsahto',
-    demo: '#',
-    color: 'border-accent-primary/30',
-    status: 'Production',
-    locations: ['Global'],
   },
 ]
 
@@ -88,14 +64,16 @@ const Projects = () => {
                 <div className="flex items-start justify-between mb-4">
                   <span className="text-4xl font-bold text-dark-600">0{index + 1}</span>
                   <div className="flex gap-2">
-                    <a
-                      href={project.github}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="w-9 h-9 rounded-lg bg-dark-700 flex items-center justify-center text-gray-400 hover:text-white transition-colors"
-                    >
-                      <FaGithub size={18} />
-                    </a>
+                    {project.github && (
+                      <a
+                        href={project.github}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="w-9 h-9 rounded-lg bg-dark-700 flex items-center justify-center text-gray-400 hover:text-white transition-colors"
+                      >
+                        <FaGithub size={18} />
+                      </a>
+                    )}
                     <a
                       href={project.demo}
                       target="_blank"

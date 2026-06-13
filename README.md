@@ -7,7 +7,7 @@
 ![TailwindCSS](https://img.shields.io/badge/TailwindCSS-3.3.5-38B2AC?style=for-the-badge&logo=tailwind-css&logoColor=white)
 ![Framer Motion](https://img.shields.io/badge/Framer%20Motion-10.16.4-FF0055?style=for-the-badge&logo=framer&logoColor=white)
 
-**A modern, minimal portfolio website for a 15-year-old backend engineer & mobile app developer.**
+**A modern, minimal portfolio website for a full-stack developer, backend engineer & mobile app developer.**
 
 </div>
 
@@ -15,10 +15,9 @@
 
 ## 👤 About
 
-**Yasir** - 15 y/o Backend Engineer from Karachi, Pakistan
+**Yasir** - Full-Stack Developer & Backend Engineer from Pakistan
 
 - 🔗 GitHub: [@yasirDev404](https://github.com/yasirDev404)
-- 💼 LinkedIn: [Yasir](https://www.linkedin.com/in/yasir-sahto-507008364/)
 - 📧 Email: yasirsahto193@gmail.com
 
 ---
