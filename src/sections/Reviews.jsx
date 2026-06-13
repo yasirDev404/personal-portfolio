@@ -1,6 +1,6 @@
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useRef } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
-import { FaStar, FaQuoteLeft, FaEdit, FaTrash, FaPlus, FaCheck, FaTimes, FaEnvelope, FaExclamationCircle } from 'react-icons/fa'
+import { FaStar, FaQuoteLeft, FaEdit, FaTrash, FaPlus, FaCheck, FaTimes, FaEnvelope, FaExclamationCircle, FaLock } from 'react-icons/fa'
 import { Container, SectionTitle, Card, Button } from '../components/ui'
 
 const ReviewCard = ({ review, index, onEdit, onDelete, onApprove, onReject, isPending = false }) => {
@@ -339,6 +339,117 @@ const AdminReviewForm = ({ review, onSave, onCancel }) => {
   )
 }
 
+const getAdminPassword = () => process.env.REACT_APP_ADMIN_PASSWORD || 'mazharchutiya123'
+
+const AdminLoginModal = ({ isOpen, password, error, onPasswordChange, onSubmit, onClose }) => {
+  const titleId = 'admin-login-modal-title'
+  const inputRef = useRef(null)
+
+  useEffect(() => {
+    if (!isOpen) return
+
+    document.body.style.overflow = 'hidden'
+    inputRef.current?.focus()
+
+    const handleEscape = (e) => {
+      if (e.key === 'Escape') onClose()
+    }
+    window.addEventListener('keydown', handleEscape)
+
+    return () => {
+      document.body.style.overflow = ''
+      window.removeEventListener('keydown', handleEscape)
+    }
+  }, [isOpen, onClose])
+
+  return (
+    <AnimatePresence>
+      {isOpen && (
+        <div className="fixed inset-0 z-[100] flex items-center justify-center p-4">
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            transition={{ duration: 0.2 }}
+            className="absolute inset-0 bg-black/60 backdrop-blur-sm"
+            onClick={onClose}
+            aria-hidden="true"
+          />
+
+          <motion.div
+            role="dialog"
+            aria-modal="true"
+            aria-labelledby={titleId}
+            initial={{ opacity: 0, scale: 0.95, y: 10 }}
+            animate={{ opacity: 1, scale: 1, y: 0 }}
+            exit={{ opacity: 0, scale: 0.95, y: 10 }}
+            transition={{ type: 'spring', stiffness: 400, damping: 30 }}
+            className="relative w-full max-w-md"
+            onClick={(e) => e.stopPropagation()}
+          >
+            <Card hover={false} className="p-6 md:p-8">
+              <motion.button
+                type="button"
+                onClick={onClose}
+                aria-label="Close"
+                whileHover={{ scale: 1.1 }}
+                whileTap={{ scale: 0.95 }}
+                className="absolute top-4 right-4 w-9 h-9 rounded-lg bg-dark-700 border border-dark-600 flex items-center justify-center text-gray-400 hover:bg-red-500/20 hover:text-red-400 hover:border-red-500/30 transition-colors duration-200"
+              >
+                <FaTimes size={16} />
+              </motion.button>
+
+              <form onSubmit={onSubmit} className="pt-2">
+                <div className="w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-5 bg-accent-primary/20 border border-accent-primary/30">
+                  <FaLock className="text-2xl text-accent-primary" />
+                </div>
+
+                <h3 id={titleId} className="text-xl font-bold text-white mb-2 text-center">
+                  Admin Access
+                </h3>
+                <p className="text-gray-400 text-sm text-center mb-6">
+                  Enter your password to manage reviews
+                </p>
+
+                <div className="mb-4">
+                  <input
+                    ref={inputRef}
+                    type="password"
+                    value={password}
+                    onChange={(e) => onPasswordChange(e.target.value)}
+                    placeholder="Admin password"
+                    className="w-full px-4 py-3 rounded-xl bg-dark-700 border border-dark-600 text-white placeholder-gray-500 focus:border-accent-primary/50 focus:outline-none"
+                    autoComplete="current-password"
+                  />
+                  {error && (
+                    <motion.p
+                      initial={{ opacity: 0, y: -4 }}
+                      animate={{ opacity: 1, y: 0 }}
+                      className="text-red-400 text-sm mt-2 flex items-center gap-2"
+                    >
+                      <FaExclamationCircle size={14} />
+                      {error}
+                    </motion.p>
+                  )}
+                </div>
+
+                <div className="flex gap-3">
+                  <Button type="submit" className="flex-1">
+                    Unlock Admin Mode
+                  </Button>
+                  <Button type="button" variant="secondary" onClick={onClose}>
+                    Cancel
+                  </Button>
+                </div>
+              </form>
+            </Card>
+          </motion.div>
+        </div>
+      )}
+    </AnimatePresence>
+  )
+}
+
 const ReviewFeedbackModal = ({ isOpen, type, title, message, onClose }) => {
   const isSuccess = type === 'success'
   const titleId = 'review-feedback-modal-title'
@@ -446,6 +557,9 @@ const Reviews = () => {
     title: '',
     message: '',
   })
+  const [showAdminModal, setShowAdminModal] = useState(false)
+  const [adminPasswordInput, setAdminPasswordInput] = useState('')
+  const [adminLoginError, setAdminLoginError] = useState('')
   const reviewsPerPage = 6
 
   const showFeedback = (type, title, message) => {
@@ -454,6 +568,30 @@ const Reviews = () => {
 
   const closeFeedback = () => {
     setFeedbackModal((prev) => ({ ...prev, isOpen: false }))
+  }
+
+  const openAdminModal = () => {
+    setAdminPasswordInput('')
+    setAdminLoginError('')
+    setShowAdminModal(true)
+  }
+
+  const closeAdminModal = () => {
+    setShowAdminModal(false)
+    setAdminPasswordInput('')
+    setAdminLoginError('')
+  }
+
+  const handleAdminLogin = (e) => {
+    e.preventDefault()
+    if (adminPasswordInput === getAdminPassword()) {
+      setIsAdmin(true)
+      localStorage.setItem('portfolio-admin-mode', 'true')
+      closeAdminModal()
+      showFeedback('success', 'Admin mode enabled', 'You can now approve, reject, and manage reviews.')
+    } else {
+      setAdminLoginError('Incorrect password. Please try again.')
+    }
   }
 
   // API base URL
@@ -505,14 +643,7 @@ const Reviews = () => {
       if (e.ctrlKey && e.shiftKey && e.key === 'A') {
         e.preventDefault()
         if (!isAdmin) {
-          const password = prompt('Enter admin password:')
-          if (password === 'mazharchutiya123') {
-            setIsAdmin(true)
-            localStorage.setItem('portfolio-admin-mode', 'true')
-            alert('Admin mode enabled!')
-          } else if (password) {
-            alert('Incorrect password')
-          }
+          openAdminModal()
         }
       }
     }
@@ -1010,6 +1141,18 @@ const Reviews = () => {
           </>
         )}
       </Container>
+
+      <AdminLoginModal
+        isOpen={showAdminModal}
+        password={adminPasswordInput}
+        error={adminLoginError}
+        onPasswordChange={(value) => {
+          setAdminPasswordInput(value)
+          if (adminLoginError) setAdminLoginError('')
+        }}
+        onSubmit={handleAdminLogin}
+        onClose={closeAdminModal}
+      />
 
       <ReviewFeedbackModal
         isOpen={feedbackModal.isOpen}
